@@ -119,6 +119,7 @@
             this.btXem = new System.Windows.Forms.Button();
             this.dtgvHonNhan = new System.Windows.Forms.DataGridView();
             this.btnFill = new System.Windows.Forms.Button();
+            this.pnQuanLy = new System.Windows.Forms.Panel();
             this.panel9.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel24.SuspendLayout();
@@ -148,6 +149,7 @@
             this.panel28.SuspendLayout();
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvHonNhan)).BeginInit();
+            this.pnQuanLy.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel9
@@ -942,7 +944,7 @@
             this.btnHuy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.btnHuy.Enabled = false;
             this.btnHuy.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHuy.Location = new System.Drawing.Point(504, 542);
+            this.btnHuy.Location = new System.Drawing.Point(503, 542);
             this.btnHuy.Margin = new System.Windows.Forms.Padding(4);
             this.btnHuy.Name = "btnHuy";
             this.btnHuy.Size = new System.Drawing.Size(99, 37);
@@ -1011,12 +1013,9 @@
             // panel28
             // 
             this.panel28.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.panel28.Controls.Add(this.label25);
-            this.panel28.Controls.Add(this.tbNoiDung);
+            this.panel28.Controls.Add(this.pnQuanLy);
             this.panel28.Controls.Add(this.rdbtnCongDan);
-            this.panel28.Controls.Add(this.btnTuChoi);
             this.panel28.Controls.Add(this.rdbtnQuanLy);
-            this.panel28.Controls.Add(this.btnDuyet);
             this.panel28.Location = new System.Drawing.Point(717, 357);
             this.panel28.Margin = new System.Windows.Forms.Padding(4);
             this.panel28.Name = "panel28";
@@ -1027,7 +1026,7 @@
             // 
             this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(4, 47);
+            this.label25.Location = new System.Drawing.Point(4, 8);
             this.label25.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(89, 20);
@@ -1038,10 +1037,10 @@
             // tbNoiDung
             // 
             this.tbNoiDung.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbNoiDung.Location = new System.Drawing.Point(4, 70);
+            this.tbNoiDung.Location = new System.Drawing.Point(4, 32);
             this.tbNoiDung.Margin = new System.Windows.Forms.Padding(4);
             this.tbNoiDung.Name = "tbNoiDung";
-            this.tbNoiDung.Size = new System.Drawing.Size(444, 100);
+            this.tbNoiDung.Size = new System.Drawing.Size(439, 100);
             this.tbNoiDung.TabIndex = 41;
             this.tbNoiDung.Text = "";
             // 
@@ -1063,7 +1062,7 @@
             // btnTuChoi
             // 
             this.btnTuChoi.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTuChoi.Location = new System.Drawing.Point(244, 178);
+            this.btnTuChoi.Location = new System.Drawing.Point(237, 138);
             this.btnTuChoi.Margin = new System.Windows.Forms.Padding(4);
             this.btnTuChoi.Name = "btnTuChoi";
             this.btnTuChoi.Size = new System.Drawing.Size(99, 37);
@@ -1089,7 +1088,7 @@
             // btnDuyet
             // 
             this.btnDuyet.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDuyet.Location = new System.Drawing.Point(351, 178);
+            this.btnDuyet.Location = new System.Drawing.Point(344, 138);
             this.btnDuyet.Margin = new System.Windows.Forms.Padding(4);
             this.btnDuyet.Name = "btnDuyet";
             this.btnDuyet.Size = new System.Drawing.Size(99, 37);
@@ -1167,19 +1166,31 @@
             this.btnFill.UseVisualStyleBackColor = true;
             this.btnFill.Click += new System.EventHandler(this.btnFill_Click);
             // 
+            // pnQuanLy
+            // 
+            this.pnQuanLy.Controls.Add(this.label25);
+            this.pnQuanLy.Controls.Add(this.btnTuChoi);
+            this.pnQuanLy.Controls.Add(this.tbNoiDung);
+            this.pnQuanLy.Controls.Add(this.btnDuyet);
+            this.pnQuanLy.Location = new System.Drawing.Point(4, 38);
+            this.pnQuanLy.Name = "pnQuanLy";
+            this.pnQuanLy.Size = new System.Drawing.Size(446, 181);
+            this.pnQuanLy.TabIndex = 42;
+            this.pnQuanLy.Visible = false;
+            // 
             // fHonNhan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1340, 729);
+            this.Controls.Add(this.btnXacNhan);
+            this.Controls.Add(this.btnHuy);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.dtgvHonNhan);
             this.Controls.Add(this.panel28);
             this.Controls.Add(this.btnFill);
             this.Controls.Add(this.btnDatLai);
             this.Controls.Add(this.btnDangKy);
-            this.Controls.Add(this.btnHuy);
-            this.Controls.Add(this.btnXacNhan);
             this.Controls.Add(this.panel26);
             this.Controls.Add(this.panel23);
             this.Controls.Add(this.panel27);
@@ -1245,6 +1256,8 @@
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvHonNhan)).EndInit();
+            this.pnQuanLy.ResumeLayout(false);
+            this.pnQuanLy.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1341,5 +1354,6 @@
         private System.Windows.Forms.DataGridView dtgvHonNhan;
         private System.Windows.Forms.ComboBox cbLoai;
         private System.Windows.Forms.Button btnFill;
+        private System.Windows.Forms.Panel pnQuanLy;
     }
 }

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace QuanLyCongDanThanhPho
 {
@@ -39,8 +40,19 @@ namespace QuanLyCongDanThanhPho
         }
         public void CapNhatTrangThaiHonNhan(string Macd,string trangthaihonnhan)
         {
-            string strQuery = string.Format($"UPDATE {CONGDAN} SET {HONNHAN} = N'{trangthaihonnhan}' WHERE {MACD} = N'{Macd}'");
-            DBConnection.Instance.Execute(strQuery);
+            try
+            {
+                string strQuery = string.Format($"UPDATE {CONGDAN} SET {HONNHAN} = N'{trangthaihonnhan}' WHERE {MACD} = N'{Macd}'");
+                if (!DBConnection.Instance.Execute(strQuery))
+                {
+                    throw new Exception();
+                }
+
+            }
+            catch
+            {
+                MessageBox.Show("Cập nhật thất bại");
+            }
         }
         public CongDan KiemTraDangNhap(string tentk, string matkhau)
         {
@@ -60,16 +72,59 @@ namespace QuanLyCongDanThanhPho
             string tk = dataTable.Rows[0]["TenTK"].ToString();
             return tk;
         }
+        public CongDan LayCongDanBangID(string id)
+        {
+            try
+            {
+                string strQuery = string.Format($"SELECT * FROM {CONGDAN} WHERE {MACD} = '{id}'");
+                DataTable dt = DBConnection.Instance.LayDanhSach(strQuery);
+                CongDan cd = new CongDan(dt.Rows[0]);
+                return cd;
+            }
+            catch
+            {
+                MessageBox.Show("Công dân không tồn tại");
+            }
+            return null;
+        }
         public DataTable LayDanhSach(string id)
         {
             string strQuery = string.Format($"SELECT * FROM {CONGDAN} WHERE {MACD} = '{id}'");
             return DBConnection.Instance.LayDanhSach(strQuery);
         }
+        public DataTable LayDanhSach()
+        {
+            string sqlStr = string.Format("SELECT MaCD AS [Mã công dân], HoTen AS [Họ tên], NgaySinh AS [Ngày sinh], NoiSinh AS [Nơi sinh], GioiTinh AS [Giới tính], NgheNghiep AS [Nghề nghiệp], DanToc AS [Dân tộc], TonGiao AS [Tôn giáo], TinhTrang AS [Tình trạng], HonNhan AS [Hôn nhân], TenTK AS [Tên tài khoản], MatKhau AS [Mật khẩu], LoaiTK AS [Loại tài khoản] FROM dbo.CongDan");
+            return DBConnection.Instance.LayDanhSach(sqlStr);
+        }
         public void DoiMatKhau(CongDan cd, string matkhaumoi)
         {
-            string sqlStr = string.Format($"UPDATE {CONGDAN} SET {MATKHAU} = N'{matkhaumoi}' WHERE MaCD = N'{cd.Macd}'");
-            DBConnection.Instance.Execute(sqlStr);
-            cd.Matkhau = matkhaumoi;
+            try
+            {
+                string strQuery = string.Format($"UPDATE {CONGDAN} SET {MATKHAU} = N'{matkhaumoi}' WHERE MaCD = N'{cd.Macd}'");
+                if (!DBConnection.Instance.Execute(strQuery))
+                {
+                    throw new Exception();
+                }
+                cd.Matkhau = matkhaumoi;
+            }
+            catch
+            {
+                MessageBox.Show("Đổi mật khẩu thât bại");
+            }
+        }
+        public void Xoa(string Macd)
+        {
+            try
+            {
+                string strSQL = string.Format($"DELETE FROM {CONGDAN} WHERE {MACD} = '{Macd}'");
+                if(!DBConnection.Instance.Execute(strSQL))
+                    throw new Exception();
+            }
+            catch
+            {
+                MessageBox.Show("Xóa thất bại");
+            }
         }
     }
 }

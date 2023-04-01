@@ -182,20 +182,26 @@ namespace QuanLyCongDanThanhPho
             }
             catch
             {
-
+                MessageBox.Show("EROR");
             }
         }
 
         private void rdbtnCongDan_CheckedChanged(object sender, EventArgs e)
         {
             if (rdbtnCongDan.Checked)
+            {
+                pnQuanLy.Visible = false;
                 HonNhanDAO.Instance.LoadFormPersonal(dtgvHonNhan, cd);
+            }
         }
 
         private void rdobtnQuanLy_CheckedChanged(object sender, EventArgs e)
         {
             if (rdbtnQuanLy.Checked)
+            {
+                pnQuanLy.Visible = true;
                 HonNhanDAO.Instance.LoadMailControler(dtgvHonNhan);
+            }
         }
 
         private void btnFill_Click(object sender, EventArgs e)
