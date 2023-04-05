@@ -57,14 +57,14 @@ namespace QuanLyCongDanThanhPho
         {
             lbBody.Text = btThongTinCaNhan.Text.ToUpper();
             pnTitle.BackColor = btThongTinCaNhan.BackColor;
-            OpenChildForm(new fThongTinCaNhan());
+            OpenChildForm(new fThongTinCaNhan(congdan));
         }
 
         private void btHoKhau_Click(object sender, EventArgs e)
         {
             lbBody.Text = "          " + btHoKhau.Text.ToUpper();
             pnTitle.BackColor = btHoKhau.BackColor;
-            OpenChildForm(new fHoKhau(this));
+            OpenChildForm(new fHoKhau(congdan));
         }
 
         private void btHonNhan_Click(object sender, EventArgs e)

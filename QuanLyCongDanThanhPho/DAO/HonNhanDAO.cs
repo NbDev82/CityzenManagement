@@ -40,6 +40,7 @@ namespace QuanLyCongDanThanhPho.DAO
                 return instance;
             }
         }
+        
         public void CapNhatTrangThaiHonNhan(HonNhan hn)
         {
             try
@@ -48,7 +49,10 @@ namespace QuanLyCongDanThanhPho.DAO
                 string MaCdNam = hn.Macdchong;
                 string MaCdNu = hn.Macdvo;
                 string DaKetHon = "Đã kêt hôn";
-                DBConnection.Instance.Execute(strSQL);
+                if (!DBConnection.Instance.Execute(strSQL))
+                {
+                    throw new Exception();
+                }
                 CongDanDAO.Instance.CapNhatTrangThaiHonNhan(MaCdNam,DaKetHon);
                 CongDanDAO.Instance.CapNhatTrangThaiHonNhan(MaCdNu, DaKetHon);
 
@@ -142,11 +146,11 @@ namespace QuanLyCongDanThanhPho.DAO
                 MessageBox.Show("ERROR");
             }
         }
-        public void Create(HonNhan hn)
+        public bool Create(HonNhan hn)
         {
             string strQuery = string.Format($"INSERT INTO {HONNHAN}({MAHN},{MACDCHONG} , {MACDVO}, {LOAI}, {NGAYDANGKY},{XACNHANLAN1},{XACNHANLAN2},{TRANGTHAI}) " +
                 $"VALUES ('{hn.Mahn}', '{hn.Macdchong}', '{hn.Macdvo}','{hn.Loai}','{hn.Ngaydangky}','{hn.Xacnhanlan1}','{hn.Xacnhanlan2}','{hn.Trangthai}')");
-            DBConnection.Instance.Execute(strQuery);
+            return DBConnection.Instance.Execute(strQuery);
         }
         public List<HonNhan> Read()
         {
@@ -191,11 +195,16 @@ namespace QuanLyCongDanThanhPho.DAO
                     $"UPDATE {HONNHAN} " +
                     $"SET {lanXacNhan} = '{xacNhan}' " +
                     $"WHERE {MACDCHONG} = '{hn.Macdchong}' AND {MACDVO} = '{hn.Macdvo}'");
-                DBConnection.Instance.Execute(strQuery);
+                if (DBConnection.Instance.Execute(strQuery))
+                {
+                    MessageBox.Show("Cập nhật thành công");
+                }
+                else
+                    throw new Exception();
             }
             catch
             {
-                MessageBox.Show("Thất bại");
+                MessageBox.Show("Cập nhật Thất bại");
             }
         }
         public void Delete(HonNhan hn)
@@ -203,23 +212,30 @@ namespace QuanLyCongDanThanhPho.DAO
             try
             {
                 string strQuery = string.Format($"DELETE FROM {HONNHAN} WHERE {MAHN} = '{hn.Mahn}'");
-                DBConnection.Instance.Execute(strQuery);
+                if (DBConnection.Instance.Execute(strQuery))
+                {
+                    MessageBox.Show("Xóa thành công");
+                }
+                else
+                    throw new Exception();
             }
             catch
             {
-                MessageBox.Show("Thất bại");
+                MessageBox.Show("Xóa Thất bại");
             }
         }
 
         public void SendForm(HonNhan hn)
         {
-            //string strQuery = string.Format($"INSERT INTO {MAIL}({TIEUDE},{NGAY},{NGUOIGUI},{NGUOINHAN},{NOIDUNG}) " +
-            //    $" VALUES(N'{tieude}',N'{Ngay}',N'{NguoiGui}',N'{NguoiNhan}', N'{NoiDung}')");
-
-            string strQuery = string.Format($"INSERT INTO {HONNHAN}({MACDCHONG},{MACDVO},{LOAI},{NGAYDANGKY},{TRANGTHAI}) " +
-                $" VALUES(N'{hn.Macdchong}',N'{hn.Macdvo}',N'{hn.Loai}',N'{hn.Ngaydangky}', N'{hn.Trangthai}')");
-
-            DBConnection.Instance.Execute(strQuery);
+            ;
+            if (Create(hn))
+            {
+                MessageBox.Show("Gửi thành công");
+            }
+            else
+            {
+                MessageBox.Show("Gửi thất bại");
+            }
         }
     }
 }

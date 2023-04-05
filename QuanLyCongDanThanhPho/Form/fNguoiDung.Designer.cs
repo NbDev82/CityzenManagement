@@ -187,7 +187,7 @@
             this.pnBody.Location = new System.Drawing.Point(244, 249);
             this.pnBody.Margin = new System.Windows.Forms.Padding(4);
             this.pnBody.Name = "pnBody";
-            this.pnBody.Size = new System.Drawing.Size(1361, 767);
+            this.pnBody.Size = new System.Drawing.Size(1361, 793);
             this.pnBody.TabIndex = 1;
             // 
             // pnTitle

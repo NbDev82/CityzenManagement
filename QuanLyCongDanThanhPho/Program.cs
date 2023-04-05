@@ -17,8 +17,8 @@ namespace QuanLyCongDanThanhPho
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            CongDan cd = CongDanDAO.Instance.KiemTraDangNhap("nguyenvantrong", "12345");
-            Application.Run(new fDangNhap());
+            CongDan cd = CongDanDAO.Instance.KiemTraDangNhap("nguyenvantrong", "nguyenvantrong");
+            Application.Run(new fThongTinCaNhan(cd));
         }
 
 

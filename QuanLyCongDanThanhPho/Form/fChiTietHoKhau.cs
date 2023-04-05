@@ -21,7 +21,7 @@ namespace QuanLyCongDanThanhPho
 
         private void btQuayLai_Click(object sender, EventArgs e)
         {
-            nguoidung.OpenChildForm(new fHoKhau(nguoidung));
+            //nguoidung.OpenChildForm(new fHoKhau(nguoidung));
         }
 
         private void fChiTietHoKhau_Load(object sender, EventArgs e)

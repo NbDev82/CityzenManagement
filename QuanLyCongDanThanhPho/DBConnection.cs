@@ -66,16 +66,15 @@ namespace QuanLyCongDanThanhPho
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lấy danh sách thất bại\n" + ex);
+                return null;
             }
             finally
             {
                 conn.Close();
             }
-            return null;
         }
 
-        public void Execute(string query)
+        public bool Execute(string query)
         {
             try
             {
@@ -83,12 +82,12 @@ namespace QuanLyCongDanThanhPho
                 SqlCommand cmd = new SqlCommand(query, conn);
 
                 if (cmd.ExecuteNonQuery() > 0)
-                    MessageBox.Show("Thành công");
-                else MessageBox.Show("Thất bại");
+                    return true;
+                return false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Thất bại\n" + ex);
+                return false;
             }
             finally
             {
