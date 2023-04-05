@@ -84,15 +84,15 @@
             this.txtTinhTrang = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.panel15 = new System.Windows.Forms.Panel();
-            this.txtLoaiTaiKhoan = new System.Windows.Forms.TextBox();
+            this.txtQuanHe = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.panel17 = new System.Windows.Forms.Panel();
             this.txtNgheNghiep = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.pnCapNhatHoKhau = new System.Windows.Forms.TableLayoutPanel();
             this.btnThem = new System.Windows.Forms.Button();
-            this.btnXoa = new System.Windows.Forms.Button();
             this.btnDien = new System.Windows.Forms.Button();
+            this.btnXoa = new System.Windows.Forms.Button();
             this.pnChucNang = new System.Windows.Forms.Panel();
             this.pnChinhSuaThongTinThanhVien = new System.Windows.Forms.TableLayoutPanel();
             this.btnChinhSua = new System.Windows.Forms.Button();
@@ -756,7 +756,7 @@
             // panel15
             // 
             this.panel15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.panel15.Controls.Add(this.txtLoaiTaiKhoan);
+            this.panel15.Controls.Add(this.txtQuanHe);
             this.panel15.Controls.Add(this.label14);
             this.panel15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel15.Location = new System.Drawing.Point(312, 184);
@@ -765,14 +765,14 @@
             this.panel15.Size = new System.Drawing.Size(300, 37);
             this.panel15.TabIndex = 73;
             // 
-            // txtLoaiTaiKhoan
+            // txtQuanHe
             // 
-            this.txtLoaiTaiKhoan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLoaiTaiKhoan.Location = new System.Drawing.Point(145, 4);
-            this.txtLoaiTaiKhoan.Margin = new System.Windows.Forms.Padding(4);
-            this.txtLoaiTaiKhoan.Name = "txtLoaiTaiKhoan";
-            this.txtLoaiTaiKhoan.Size = new System.Drawing.Size(151, 27);
-            this.txtLoaiTaiKhoan.TabIndex = 1;
+            this.txtQuanHe.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtQuanHe.Location = new System.Drawing.Point(145, 4);
+            this.txtQuanHe.Margin = new System.Windows.Forms.Padding(4);
+            this.txtQuanHe.Name = "txtQuanHe";
+            this.txtQuanHe.Size = new System.Drawing.Size(151, 27);
+            this.txtQuanHe.TabIndex = 1;
             // 
             // label14
             // 
@@ -781,9 +781,9 @@
             this.label14.Location = new System.Drawing.Point(4, 7);
             this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(133, 20);
+            this.label14.Size = new System.Drawing.Size(85, 20);
             this.label14.TabIndex = 2;
-            this.label14.Text = "Loại tài khoản:";
+            this.label14.Text = "Quan hệ:";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel17
@@ -825,8 +825,8 @@
             this.pnCapNhatHoKhau.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.pnCapNhatHoKhau.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.pnCapNhatHoKhau.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.pnCapNhatHoKhau.Controls.Add(this.btnThem, 1, 0);
             this.pnCapNhatHoKhau.Controls.Add(this.btnDien, 0, 0);
+            this.pnCapNhatHoKhau.Controls.Add(this.btnThem, 1, 0);
             this.pnCapNhatHoKhau.Controls.Add(this.btnXoa, 2, 0);
             this.pnCapNhatHoKhau.Location = new System.Drawing.Point(311, 228);
             this.pnCapNhatHoKhau.Name = "pnCapNhatHoKhau";
@@ -846,16 +846,6 @@
             this.btnThem.UseVisualStyleBackColor = true;
             this.btnThem.Click += new System.EventHandler(this.btnThem_Click);
             // 
-            // btnXoa
-            // 
-            this.btnXoa.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnXoa.Location = new System.Drawing.Point(199, 3);
-            this.btnXoa.Name = "btnXoa";
-            this.btnXoa.Size = new System.Drawing.Size(95, 37);
-            this.btnXoa.TabIndex = 0;
-            this.btnXoa.Text = "Xóa";
-            this.btnXoa.UseVisualStyleBackColor = true;
-            // 
             // btnDien
             // 
             this.btnDien.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -866,6 +856,17 @@
             this.btnDien.Text = "Điền";
             this.btnDien.UseVisualStyleBackColor = true;
             this.btnDien.Click += new System.EventHandler(this.btnDien_Click);
+            // 
+            // btnXoa
+            // 
+            this.btnXoa.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnXoa.Location = new System.Drawing.Point(199, 3);
+            this.btnXoa.Name = "btnXoa";
+            this.btnXoa.Size = new System.Drawing.Size(95, 37);
+            this.btnXoa.TabIndex = 0;
+            this.btnXoa.Text = "Xóa";
+            this.btnXoa.UseVisualStyleBackColor = true;
+            this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
             // 
             // pnChucNang
             // 
@@ -1135,7 +1136,7 @@
         private System.Windows.Forms.TextBox txtTinhTrang;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Panel panel15;
-        private System.Windows.Forms.TextBox txtLoaiTaiKhoan;
+        private System.Windows.Forms.TextBox txtQuanHe;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Panel panel16;
         private System.Windows.Forms.TextBox txtHonNhan;

@@ -21,7 +21,10 @@ namespace QuanLyCongDanThanhPho.DAO
         private readonly string TRANGTHAI = "TrangThai";
 
         private readonly string MACD = "MaCD";
+        private readonly string TINHTRANGCUTRU = "TinhTrangCuTru";
+        private readonly string QUANHEVOICHUHO = "QuanHeVoiChuHo";
 
+        private readonly string CONGDAN = "CongDan";
         private static HoKhauDAO instance;
         public static HoKhauDAO Instance
         {
@@ -31,6 +34,15 @@ namespace QuanLyCongDanThanhPho.DAO
                     instance = new HoKhauDAO();
                 return instance;
             }
+        } 
+        public DataTable LayThongTinThanhVien(string macd)
+        {
+            string strSQL = string.Format($"" +
+                $"SELECT * " +
+                $"FROM {CONGDAN}, {CHITIETHOKHAU} " +
+                $"WHERE {CONGDAN}.{MACD} = {CHITIETHOKHAU}.{MACD} AND {CONGDAN}.{MACD} = '{macd}'");
+            DataTable dt = DBConnection.Instance.LayDanhSach(strSQL);
+            return dt;
         }
         public int LayMaHo(string Macd)
         {
@@ -98,6 +110,21 @@ namespace QuanLyCongDanThanhPho.DAO
             }
             return null;
         }
+        public bool Add(string macd, string MaHo, string quanhe)
+        {
+            try
+            {
+                string strSQL = string.Format($"INSERT INTO {CHITIETHOKHAU}({MAHO},{MACD},{TINHTRANGCUTRU},{QUANHEVOICHUHO},{NGAYDANGKY},{TRANGTHAI}) " +
+                                              $"VALUES({MaHo},N'{macd}',N'Thường trú',N'{quanhe}',N'{DateTime.Now}',N'Chưa Duyệt')");
+                if (DBConnection.Instance.Execute(strSQL))
+                    return true;
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         public bool Add(HoKhau hk)
         {
             try
@@ -118,6 +145,11 @@ namespace QuanLyCongDanThanhPho.DAO
         {
 
             return true;
+        }
+        public bool Delete(string macd)
+        {
+            string strSQL = string.Format($"DELETE FROM {CHITIETHOKHAU} WHERE {MACD} = '{macd}'");
+            return DBConnection.Instance.Execute(strSQL);
         }
     }
 }

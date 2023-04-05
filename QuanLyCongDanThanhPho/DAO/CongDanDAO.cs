@@ -126,5 +126,14 @@ namespace QuanLyCongDanThanhPho
                 MessageBox.Show("Xóa thất bại");
             }
         }
+        public bool Update(CongDan cd)
+        {
+            //CongDan cd = new CongDan(macd, hoten, ngaysinh, noisinh, gioitinh, nghenghiep, dantoc, tongiao, honnhan, tinhtrang, "", "", loaitk, "", "", "");
+            string strSQL = string.Format(
+                $"UPDATE {CONGDAN} " +
+                $"SET {HOTEN} = '{cd.Hoten}', {NGAYSINH} = '{cd.Ngaysinh}', {NOISINH} = '{cd.Noisinh}', {GIOITINH} = '{cd.Gioitinh}', {NGHENGHIEP} = '{cd.Nghenghiep}', {DANTOC} = '{cd.Dantoc}', {TONGIAO} = '{cd.Tongiao}' " +
+                $"WHERE {MACD} = '{cd.Macd}'");
+            return DBConnection.Instance.Execute(strSQL);
+        }
     }
 }

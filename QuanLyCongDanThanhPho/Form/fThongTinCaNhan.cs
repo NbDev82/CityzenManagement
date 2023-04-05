@@ -20,85 +20,77 @@ namespace QuanLyCongDanThanhPho
         }
         void LoadThongTinCaNhan()
         {
-            tbMaCD.Text = cd.Macd;
-            tbHoTen.Text = cd.Hoten;
+            txtMaCD.Text = cd.Macd;
+            txtHoTen.Text = cd.Hoten;
             dtpkNgaySinh.Text = cd.Ngaysinh;
-            cbNoiSinh.Text = cd.Noisinh;
-            cbGioiTinh.Text = cd.Gioitinh;
-            tbNgheNghiep.Text = cd.Nghenghiep;
-            cbDanToc.Text = cd.Dantoc;
-            tbTonGiao.Text = cd.Tongiao;
-            cbHonNhan.Text = cd.Honnhan;
-            cbTinhTrang.Text = cd.Tinhtrang;
-            cbLoaiTaiKhoan.Text = cd.Loaitk;
+            cbxNoiSinh.Text = cd.Noisinh;
+            cbxGioiTinh.Text = cd.Gioitinh;
+            txtNgheNghiep.Text = cd.Nghenghiep;
+            cbxDanToc.Text = cd.Dantoc;
+            txtTonGiao.Text = cd.Tongiao;
+            cbxHonNhan.Text = cd.Honnhan;
+            cbxTinhTrang.Text = cd.Tinhtrang;
+            cbxLoaiTaiKhoan.Text = cd.Loaitk;
         }
         void QuanLyLoad()
         {
             ResetThongTinRong();
             pnTimKiem.Enabled = true;
             dtgvThongTinCaNhan.Enabled = true;
-            btThem.Enabled = true;
-            btSua.Enabled = true;
-            btXoa.Enabled = true;
-            tbHoTen.Enabled = true;
+            btnConfirm.Enabled = true;
+            txtHoTen.Enabled = true;
             dtpkNgaySinh.Enabled = true;
-            cbNoiSinh.Enabled = true;
-            cbGioiTinh.Enabled = true;
-            tbNgheNghiep.Enabled = true;
-            cbDanToc.Enabled = true;
-            tbTonGiao.Enabled = true;
-            cbHonNhan.Enabled = true;
-            cbTinhTrang.Enabled = true;
-            cbLoaiTaiKhoan.Enabled = true;
+            cbxNoiSinh.Enabled = true;
+            cbxGioiTinh.Enabled = true;
+            txtNgheNghiep.Enabled = true;
+            cbxDanToc.Enabled = true;
+            txtTonGiao.Enabled = true;
+            cbxHonNhan.Enabled = true;
+            cbxTinhTrang.Enabled = true;
+            cbxLoaiTaiKhoan.Enabled = true;
         }
         void CongDanLoad()
         {
-            tbMaCD.Enabled = false;
-            tbHoTen.Enabled = false;
+            txtMaCD.Enabled = false;
+            txtHoTen.Enabled = false;
             dtpkNgaySinh.Enabled = false;
-            cbNoiSinh.Enabled = false;
-            cbGioiTinh.Enabled = false;
-            tbNgheNghiep.Enabled = false;
-            cbDanToc.Enabled = false;
-            tbTonGiao.Enabled = false;
-            cbHonNhan.Enabled = false;
-            cbTinhTrang.Enabled = false;
-            cbLoaiTaiKhoan.Enabled = false;
+            cbxNoiSinh.Enabled = false;
+            cbxGioiTinh.Enabled = false;
+            txtNgheNghiep.Enabled = false;
+            cbxDanToc.Enabled = false;
+            txtTonGiao.Enabled = false;
+            cbxHonNhan.Enabled = false;
+            cbxTinhTrang.Enabled = false;
+            cbxLoaiTaiKhoan.Enabled = false;
             LoadThongTinCaNhan();
             pnTimKiem.Enabled = false;
             dtgvThongTinCaNhan.Enabled = false;
-            btThem.Enabled = false;
-            btSua.Enabled = false;
-            btXoa.Enabled = false;
+            btnConfirm.Enabled = false;
         }
         void ResetThongTinRong()
         {
-            tbMaCD.Text = "";
-            tbHoTen.Text = "";
+            txtMaCD.Text = "";
+            txtHoTen.Text = "";
             dtpkNgaySinh.Value = DateTime.Today;
-            cbNoiSinh.Text = "";
-            tbNgheNghiep.Text = "";
-            cbDanToc.Text = "";
-            tbTonGiao.Text = "Không";
-            cbLoaiTaiKhoan.Text = "Công dân";
+            cbxNoiSinh.Text = "";
+            txtNgheNghiep.Text = "";
+            cbxDanToc.Text = "";
+            txtTonGiao.Text = "Không";
+            cbxLoaiTaiKhoan.Text = "Công dân";
         }
         private void fThongTinCaNhan_Load(object sender, EventArgs e)
         {
-            cbNoiSinh.Items.AddRange(Program.tinhthanh.ToArray());
-            cbDanToc.Items.AddRange(Program.dantoc.ToArray());
+            cbxNoiSinh.Items.AddRange(Program.tinhthanh.ToArray());
+            cbxDanToc.Items.AddRange(Program.dantoc.ToArray());
             //CongDanLoad();
             LoadThongTinCaNhan();
-            pnQuanLy.Visible = true;
-            dtgvThongTinCaNhan.DataSource = CongDanDAO.Instance.LayDanhSach();
+            pnThongTinCaNhan.Enabled = false;
+            pnQuanLy.Enabled = false;
+            tpnChucNang.Enabled = false;
+            //dtgvThongTinCaNhan.DataSource = CongDanDAO.Instance.LayDanhSach();
             if (cd.Loaitk == "Công dân")
             {
-                pnTimKiem.Visible = false;
-                dtgvThongTinCaNhan.Visible = false;
-                pnChucNang.Visible = false;
-
-                pnThongTinCaNhan.Enabled = false;
-                pnQuanLy.Visible = false;
-                pnChucNang.Enabled = false;
+                pnPhanQuyen.Enabled = false;
             }  
         }
 
@@ -109,27 +101,26 @@ namespace QuanLyCongDanThanhPho
 
         private void rbCongDan_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbCongDan.Checked == true)
+            if (rdoCongDan.Checked == true)
             {
-                // CongDanLoad();
-                pnQuanLy.Visible = false;
+                pnQuanLy.Enabled = false;
                 pnThongTinCaNhan.Enabled = false;
+                tpnChucNang.Enabled = false;
             }
         }
 
         private void rbQuanLy_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbQuanLy.Checked == true)
+            if (rdoQuanLy.Checked == true)
             {
-                pnQuanLy.Visible = true;
-                pnThongTinCaNhan.Enabled = true;
-                //QuanLyLoad();
+                pnQuanLy.Enabled = true;
+                tpnChucNang.Enabled = true;
             }
         }
 
         private void btTimKiem_Click(object sender, EventArgs e)
         {
-            string Macd = tbTimKiem.Text;
+            string Macd = txtTimKiem.Text;
             DataTable dt = CongDanDAO.Instance.LayDanhSach(Macd);
             dtgvThongTinCaNhan.DataSource= dt;
         }
@@ -149,9 +140,9 @@ namespace QuanLyCongDanThanhPho
         {
             try
             {
-                if (tbMaCD.Text == "")
+                if (txtMaCD.Text == "")
                     throw new Exception();
-                string Macd = tbMaCD.Text;
+                string Macd = txtMaCD.Text;
                 CongDanDAO.Instance.Xoa(Macd);
             }
             catch
@@ -159,6 +150,60 @@ namespace QuanLyCongDanThanhPho
                 MessageBox.Show("Vui lòng chọn 1 công dân");
             }
 
+        }
+        private void btSua_Click(object sender, EventArgs e)
+        {
+            //if (!CongDanDAO.Instance.isExist(txtMaCD.Text))
+            //{
+            //    string macd = txtMaCD.Text;
+            //    string hoten = txtHoTen.Text;
+            //    string ngaysinh = dtpkNgaySinh.Text;
+            //    string noisinh = cbxNoiSinh.Text;
+            //    string gioitinh = cbxGioiTinh.Text;
+            //    string nghenghiep = txtNgheNghiep.Text;
+            //    string dantoc = cbxDanToc.Text;
+            //    string tongiao = txtTonGiao.Text;
+            //    string honnhan = cbxHonNhan.Text;
+            //    string tinhtrang = cbxTinhTrang.Text;
+            //    string loaitk = cbxLoaiTaiKhoan.Text;
+
+            //    CongDan cd = new CongDan(macd, hoten, ngaysinh, noisinh, gioitinh, nghenghiep, dantoc, tongiao, honnhan, tinhtrang,"","",loaitk,"","","");
+            //    if (CongDanDAO.Instance.Update(cd))
+            //        MessageBox.Show("Cập nhật thành công");
+            //    else
+            //        MessageBox.Show("Cập nhật thất bại");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Mã công dân không đúng");
+            //}
+        }
+
+        private void btThem_Click(object sender, EventArgs e)
+        {
+            pnThongTinCaNhan.Enabled = !pnThongTinCaNhan.Enabled;
+        }
+
+        private void btnConfirm_Click(object sender, EventArgs e)
+        {
+
+            string macd = txtMaCD.Text;
+            string hoten = txtHoTen.Text;
+            string ngaysinh = dtpkNgaySinh.Text;
+            string noisinh = cbxNoiSinh.Text;
+            string gioitinh = cbxGioiTinh.Text;
+            string nghenghiep = txtNgheNghiep.Text;
+            string dantoc = cbxDanToc.Text;
+            string tongiao = txtTonGiao.Text;
+            //string honnhan = cbxHonNhan.Text;
+            //string tinhtrang = cbxTinhTrang.Text;
+            //string loaitk = cbxLoaiTaiKhoan.Text;
+
+            CongDan cd = new CongDan(macd, hoten, ngaysinh, noisinh, gioitinh, nghenghiep, dantoc, tongiao, "", "", "", "", "", "", "", "");
+            if (CongDanDAO.Instance.Update(cd))
+                MessageBox.Show("Cập nhật thành công");
+            else
+                MessageBox.Show("Cập nhật thất bại");
         }
     }
 }

@@ -20,21 +20,19 @@ namespace QuanLyCongDanThanhPho
             InitializeComponent();
             cd = user;
         }
-        private void Fill(string Macd)
+        private void Fill(DataRow dtCD)
         {
-            //List<Control> ltext = new List<Control>();
-            //ltext.Add(cbMaCDNam);
-            //ltext.Add(tbHoTenNam);
-            //ltext.Add(dtpkNgaySinhNam);
-            //ltext.Add(tbNoiSinhNam);
-            //ltext.Add(tbGioiTinhNam);
-            //ltext.Add(tbNgheNghiepNam);
-            //ltext.Add(tbDanTocNam);
-            //ltext.Add(tbTonGiaoNam);
-            //if (HoKhauDAO.Instance.Fill(Macd, ltext))
-            //{
-                
-            //}
+            txtMaCD.Text = dtCD["MaCD"].ToString();
+            txtHoTen.Text = dtCD["HoTen"].ToString();
+            txtNgaySinh.Text = dtCD["NgaySinh"].ToString();
+            txtNoiSinh.Text = dtCD["NoiSinh"].ToString();
+            txtGioiTinh.Text = dtCD["GioiTinh"].ToString();
+            txtNgheNghiep.Text = dtCD["NgheNghiep"].ToString();
+            txtDanToc.Text = dtCD["DanToc"].ToString();
+            txtTonGiao.Text = dtCD["TonGiao"].ToString();
+            txtHonNhan.Text = dtCD["HonNhan"].ToString();
+            txtTinhTrang.Text = dtCD["TinhTrang"].ToString();
+            txtQuanHe.Text = dtCD["QuanHeVoiChuHo"].ToString();
         }
         private void btChiTiet_Click(object sender, EventArgs e)
         {
@@ -43,9 +41,7 @@ namespace QuanLyCongDanThanhPho
                 if (pnThongTinHoKhau.Enabled)
                     throw new Exception();
                 pnChiTietHoKhau.Enabled = true;
-                int MaHo = int.Parse(txtMaHo.Text);
-                DataTable dt = HoKhauDAO.Instance.LayDanhSach(MaHo,"ChiTietHoKhau");
-                dtgvChiTietHoKhau.DataSource = dt;
+                LayDanhSachChiTietHoKhau();
                 if (rdoQuanLy.Checked)
                     pnChinhSuaThongTinThanhVien.Enabled = true;
                 else
@@ -93,22 +89,12 @@ namespace QuanLyCongDanThanhPho
                 if (CurrentRow != null)
                 {
                     string maCd = (string)CurrentRow.Rows[index]["MaCD"];
-                    Fill(maCd);
-                    DataTable dt = CongDanDAO.Instance.LayDanhSach(maCd);
+                    
+                    DataTable dt = HoKhauDAO.Instance.LayThongTinThanhVien(maCd);
                     DataRow dtCD = dt.Rows[0];
                     if (dtCD == null)
                         throw new Exception();
-                    txtMaCD.Text = dtCD["MaCD"].ToString();
-                    txtHoTen.Text = dtCD["HoTen"].ToString();
-                    txtNgaySinh.Text = dtCD["NgaySinh"].ToString();
-                    txtNoiSinh.Text = dtCD["NoiSinh"].ToString();
-                    txtGioiTinh.Text = dtCD["GioiTinh"].ToString();
-                    txtNgheNghiep.Text = dtCD["NgheNghiep"].ToString();
-                    txtDanToc.Text = dtCD["DanToc"].ToString();
-                    txtTonGiao.Text = dtCD["TonGiao"].ToString();
-                    txtHonNhan.Text = dtCD["HonNhan"].ToString();
-                    txtTinhTrang.Text = dtCD["TinhTrang"].ToString();
-                    txtLoaiTaiKhoan.Text = dtCD["LoaiTK"].ToString();
+                    Fill(dtCD);
                 }
                 else
                     throw new Exception();
@@ -123,7 +109,6 @@ namespace QuanLyCongDanThanhPho
         {
             LoadCongDan();
         }
-
         private void btnTimKiem_Click(object sender, EventArgs e)
         {
             try
@@ -138,7 +123,6 @@ namespace QuanLyCongDanThanhPho
                 MessageBox.Show("Không được để trống");
             }
         }
-
         private void dtgvDanhSachHoKhau_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int index = dtgvDanhSachHoKhau.CurrentRow.Index;
@@ -149,13 +133,11 @@ namespace QuanLyCongDanThanhPho
             txtQuanHuyen.Text = dt.Cells[3].Value.ToString();
             txtPhuongXa.Text = dt.Cells[4].Value.ToString();
         }
-
         private void btnQuayVe_Click(object sender, EventArgs e)
         {
             HoKhauLoad();
             pnThongTinHoKhau.Enabled = false;
         }
-
         private void btnXem_Click(object sender, EventArgs e)
         {
             try
@@ -190,12 +172,10 @@ namespace QuanLyCongDanThanhPho
                 TatChinhSua();
             }
         }
-
         private void btnTaoHoKhau_Click(object sender, EventArgs e)
         {
             pnThongTinHoKhau.Enabled = true;
         }
-
         private void rdoQuanLy_CheckedChanged(object sender, EventArgs e)
         {
             if(cd.Loaitk == "Quản lý")
@@ -215,7 +195,6 @@ namespace QuanLyCongDanThanhPho
             }  
 
         }
-
         private void btnGui_Click(object sender, EventArgs e)
         {
             try
@@ -245,53 +224,43 @@ namespace QuanLyCongDanThanhPho
                 MessageBox.Show("Không được để trống");
             }
         }
-
         private void btnLoadLaiCongDan_Click(object sender, EventArgs e)
         {
             LoadCongDan();
         }
-
-        private void btnGuiThayDoi_Click(object sender, EventArgs e)
-        {
-            //string maCd = txtMaCD.Text;
-            //string hoTen = txtHoTen.Text;
-            //string ngaySinh = txtNgaySinh.Text;
-            //string noiSinh = txtNoiSinh.Text;
-            //string gioiTinh = txtGioiTinh.Text;
-            //string ngheNghiep = txtNgheNghiep.Text;
-            //string danToc = txtDanToc.Text;
-            //string tonGiao = txtTonGiao.Text;
-            //string honNhan = txtHonNhan.Text;
-            //string tinhTrang = txtTinhTrang.Text;
-            //string loaiTaiKhoan = txtLoaiTaiKhoan.Text;
-            //CongDan cd = new CongDan(maCd,hoTen,ngaySinh,noiSinh,gioiTinh,ngheNghiep,danToc,tonGiao,honNhan,tinhTrang,loaiTaiKhoan);
-            //HoKhauDAO.Instance.Update(cd);
-        }
-
         private void rdoCongDan_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoCongDan.Checked)
             {
-                pnChinhSuaThongTinThanhVien.Enabled = false;
                 TatChinhSua();
+                pnChinhSuaThongTinThanhVien.Enabled = false;
+                pnThongTin.Enabled = false;
             }
             else
             {
                 pnChinhSuaThongTinThanhVien.Enabled = true;
             }
         }
-
         private void btnThem_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                if (!HoKhauDAO.Instance.Add(txtMaCD.Text, txtMaHo.Text, txtQuanHe.Text))
+                    throw new Exception();
+                MessageBox.Show("Thêm thành công");
+                LayDanhSachChiTietHoKhau();
+            }
+            catch
+            {
+                MessageBox.Show("Công dân đã tòn tại trong hộ khẩu hoặc sai mã công dân");
+            }
         }
-
         private void btnDien_Click(object sender, EventArgs e)
         {
             try
             {
                 string Macd = txtMaCD.Text;
-                CongDan cd = CongDanDAO.Instance.LayCongDanBangID(txtMaCD.Text);
+                CongDan cdChild = CongDanDAO.Instance.LayCongDanBangID(txtMaCD.Text);
                 txtHoTen.Text = cd.Hoten;
                 txtNgaySinh.Text = cd.Ngaysinh;
                 txtNoiSinh.Text = cd.Noisinh;
@@ -301,11 +270,55 @@ namespace QuanLyCongDanThanhPho
                 txtTonGiao.Text = cd.Tongiao;
                 txtHonNhan.Text = cd.Honnhan;
                 txtTinhTrang.Text = cd.Tinhtrang;
-                txtLoaiTaiKhoan.Text = cd.Loaitk;
             }
             catch
             {
                 MessageBox.Show("Mã công dân bị sai");
+            }
+        }
+        public void LayDanhSachChiTietHoKhau()
+        {
+            int MaHo = int.Parse(txtMaHo.Text);
+            DataTable dt = HoKhauDAO.Instance.LayDanhSach(MaHo, "ChiTietHoKhau");
+            dtgvChiTietHoKhau.DataSource = dt;
+        }
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string macd = txtMaCD.Text;
+                if (IsExist(macd) && HoKhauDAO.Instance.Delete(macd))
+                {
+                    MessageBox.Show("Xóa thành công");
+                    LayDanhSachChiTietHoKhau();
+                }
+                else
+                    throw new Exception();
+            }
+            catch
+            {
+                MessageBox.Show("Xóa thất bại");
+            }
+            
+        }
+        public bool IsExist(string macd)
+        {
+            try
+            {
+                foreach (DataGridViewRow row in dtgvChiTietHoKhau.Rows)
+                {
+                    string Ma = row.Cells["MaCD"].Value.ToString();
+                    string quanHe = row.Cells["QuanHeVoiChuHo"].Value.ToString();
+                    if (Ma == macd && quanHe != "Là chủ hộ")
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

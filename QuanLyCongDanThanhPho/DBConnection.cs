@@ -66,13 +66,12 @@ namespace QuanLyCongDanThanhPho
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lấy danh sách thất bại\n" + ex);
+                return null;
             }
             finally
             {
                 conn.Close();
             }
-            return null;
         }
 
         public bool Execute(string query)
@@ -88,7 +87,6 @@ namespace QuanLyCongDanThanhPho
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Thất bại\n" + ex);
                 return false;
             }
             finally
