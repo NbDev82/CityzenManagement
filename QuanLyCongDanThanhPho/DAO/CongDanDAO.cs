@@ -89,7 +89,7 @@ namespace QuanLyCongDanThanhPho
         }
         public DataTable LayDanhSach(string id)
         {
-            string strQuery = string.Format($"SELECT * FROM {CONGDAN} WHERE {MACD} = '{id}'");
+            string strQuery = string.Format($"SELECT MaCD AS [Mã công dân], HoTen AS [Họ tên], NgaySinh AS [Ngày sinh], NoiSinh AS [Nơi sinh], GioiTinh AS [Giới tính], NgheNghiep AS [Nghề nghiệp], DanToc AS [Dân tộc], TonGiao AS [Tôn giáo], TinhTrang AS [Tình trạng], HonNhan AS [Hôn nhân], TenTK AS [Tên tài khoản], MatKhau AS [Mật khẩu], LoaiTK AS [Loại tài khoản] FROM {CONGDAN} WHERE {MACD} = '{id}'");
             return DBConnection.Instance.LayDanhSach(strQuery);
         }
         public DataTable LayDanhSach()
@@ -131,8 +131,8 @@ namespace QuanLyCongDanThanhPho
             //CongDan cd = new CongDan(macd, hoten, ngaysinh, noisinh, gioitinh, nghenghiep, dantoc, tongiao, honnhan, tinhtrang, "", "", loaitk, "", "", "");
             string strSQL = string.Format(
                 $"UPDATE {CONGDAN} " +
-                $"SET {HOTEN} = '{cd.Hoten}', {NGAYSINH} = '{cd.Ngaysinh}', {NOISINH} = '{cd.Noisinh}', {GIOITINH} = '{cd.Gioitinh}', {NGHENGHIEP} = '{cd.Nghenghiep}', {DANTOC} = '{cd.Dantoc}', {TONGIAO} = '{cd.Tongiao}' " +
-                $"WHERE {MACD} = '{cd.Macd}'");
+                $"SET {HOTEN} = N'{cd.Hoten}', {NGAYSINH} = N'{cd.Ngaysinh}', {NOISINH} = N'{cd.Noisinh}', {GIOITINH} = N'{cd.Gioitinh}', {NGHENGHIEP} = N'{cd.Nghenghiep}', {DANTOC} = N'{cd.Dantoc}', {TONGIAO} = N'{cd.Tongiao}' " +
+                $"WHERE {MACD} = N'{cd.Macd}'");
             return DBConnection.Instance.Execute(strSQL);
         }
     }

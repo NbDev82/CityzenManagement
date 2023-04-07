@@ -18,7 +18,7 @@ namespace QuanLyCongDanThanhPho
             InitializeComponent();
             this.cd = cd;
         }
-        void LoadThongTinCaNhan()
+        void LoadThongTinCaNhan(CongDan cd)
         {
             txtMaCD.Text = cd.Macd;
             txtHoTen.Text = cd.Hoten;
@@ -61,8 +61,9 @@ namespace QuanLyCongDanThanhPho
             txtTonGiao.Enabled = false;
             cbxHonNhan.Enabled = false;
             cbxTinhTrang.Enabled = false;
+            cbxTinhTrang.Enabled = false;
             cbxLoaiTaiKhoan.Enabled = false;
-            LoadThongTinCaNhan();
+            LoadThongTinCaNhan(cd);
             pnTimKiem.Enabled = false;
             dtgvThongTinCaNhan.Enabled = false;
             btnConfirm.Enabled = false;
@@ -83,10 +84,9 @@ namespace QuanLyCongDanThanhPho
             cbxNoiSinh.Items.AddRange(Program.tinhthanh.ToArray());
             cbxDanToc.Items.AddRange(Program.dantoc.ToArray());
             //CongDanLoad();
-            LoadThongTinCaNhan();
+            LoadThongTinCaNhan(cd);
             pnThongTinCaNhan.Enabled = false;
             pnQuanLy.Enabled = false;
-            tpnChucNang.Enabled = false;
             //dtgvThongTinCaNhan.DataSource = CongDanDAO.Instance.LayDanhSach();
             if (cd.Loaitk == "Công dân")
             {
@@ -104,8 +104,6 @@ namespace QuanLyCongDanThanhPho
             if (rdoCongDan.Checked == true)
             {
                 pnQuanLy.Enabled = false;
-                pnThongTinCaNhan.Enabled = false;
-                tpnChucNang.Enabled = false;
             }
         }
 
@@ -114,15 +112,21 @@ namespace QuanLyCongDanThanhPho
             if (rdoQuanLy.Checked == true)
             {
                 pnQuanLy.Enabled = true;
-                tpnChucNang.Enabled = true;
             }
         }
 
         private void btTimKiem_Click(object sender, EventArgs e)
         {
-            string Macd = txtTimKiem.Text;
-            DataTable dt = CongDanDAO.Instance.LayDanhSach(Macd);
-            dtgvThongTinCaNhan.DataSource= dt;
+            try
+            {
+                string Macd = txtTimKiem.Text;
+                DataTable dt = CongDanDAO.Instance.LayDanhSach(Macd);
+                dtgvThongTinCaNhan.DataSource= dt;
+            }
+            catch
+            {
+                MessageBox.Show("Không được để trống");
+            }
         }
 
         private void btXem_Click(object sender, EventArgs e)
@@ -182,6 +186,7 @@ namespace QuanLyCongDanThanhPho
         private void btThem_Click(object sender, EventArgs e)
         {
             pnThongTinCaNhan.Enabled = !pnThongTinCaNhan.Enabled;
+            btnConfirm.Enabled = true;
         }
 
         private void btnConfirm_Click(object sender, EventArgs e)
@@ -189,21 +194,26 @@ namespace QuanLyCongDanThanhPho
 
             string macd = txtMaCD.Text;
             string hoten = txtHoTen.Text;
-            string ngaysinh = dtpkNgaySinh.Text;
+            string ngaysinh = dtpkNgaySinh.Value.Date.ToString();
             string noisinh = cbxNoiSinh.Text;
             string gioitinh = cbxGioiTinh.Text;
             string nghenghiep = txtNgheNghiep.Text;
             string dantoc = cbxDanToc.Text;
             string tongiao = txtTonGiao.Text;
-            //string honnhan = cbxHonNhan.Text;
-            //string tinhtrang = cbxTinhTrang.Text;
-            //string loaitk = cbxLoaiTaiKhoan.Text;
-
             CongDan cd = new CongDan(macd, hoten, ngaysinh, noisinh, gioitinh, nghenghiep, dantoc, tongiao, "", "", "", "", "", "", "", "");
             if (CongDanDAO.Instance.Update(cd))
                 MessageBox.Show("Cập nhật thành công");
             else
                 MessageBox.Show("Cập nhật thất bại");
+            btnConfirm.Enabled = false;
+        }
+
+        private void dtgvThongTinCaNhan_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int Index = dtgvThongTinCaNhan.CurrentRow.Index;
+            string Macd = dtgvThongTinCaNhan.Rows[Index].Cells["Mã công dân"].Value.ToString();
+            CongDan cd = CongDanDAO.Instance.LayCongDanBangID(Macd);
+            LoadThongTinCaNhan(cd);
         }
     }
 }

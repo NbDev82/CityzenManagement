@@ -69,11 +69,11 @@
             this.pnQuanLy = new System.Windows.Forms.Panel();
             this.pnThongTinCaNhan = new System.Windows.Forms.Panel();
             this.pnPhanQuyen = new System.Windows.Forms.Panel();
+            this.tpnChucNang = new System.Windows.Forms.TableLayoutPanel();
             this.btnConfirm = new System.Windows.Forms.Button();
+            this.btnUpdate = new System.Windows.Forms.Button();
             this.rdoCongDan = new System.Windows.Forms.RadioButton();
             this.rdoQuanLy = new System.Windows.Forms.RadioButton();
-            this.tpnChucNang = new System.Windows.Forms.TableLayoutPanel();
-            this.btnUpdate = new System.Windows.Forms.Button();
             this.pnTimKiem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvThongTinCaNhan)).BeginInit();
             this.panel12.SuspendLayout();
@@ -147,6 +147,7 @@
             this.dtgvThongTinCaNhan.RowHeadersWidth = 51;
             this.dtgvThongTinCaNhan.Size = new System.Drawing.Size(627, 390);
             this.dtgvThongTinCaNhan.TabIndex = 48;
+            this.dtgvThongTinCaNhan.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvThongTinCaNhan_CellContentDoubleClick);
             // 
             // panel12
             // 
@@ -549,6 +550,7 @@
             this.pnThongTinCaNhan.Controls.Add(this.panel3);
             this.pnThongTinCaNhan.Controls.Add(this.panel2);
             this.pnThongTinCaNhan.Controls.Add(this.panel1);
+            this.pnThongTinCaNhan.Enabled = false;
             this.pnThongTinCaNhan.Location = new System.Drawing.Point(6, 64);
             this.pnThongTinCaNhan.Name = "pnThongTinCaNhan";
             this.pnThongTinCaNhan.Size = new System.Drawing.Size(490, 356);
@@ -566,10 +568,26 @@
             this.pnPhanQuyen.Size = new System.Drawing.Size(627, 106);
             this.pnPhanQuyen.TabIndex = 47;
             // 
+            // tpnChucNang
+            // 
+            this.tpnChucNang.ColumnCount = 2;
+            this.tpnChucNang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tpnChucNang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tpnChucNang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tpnChucNang.Controls.Add(this.btnConfirm, 1, 0);
+            this.tpnChucNang.Controls.Add(this.btnUpdate, 0, 0);
+            this.tpnChucNang.Location = new System.Drawing.Point(44, 45);
+            this.tpnChucNang.Name = "tpnChucNang";
+            this.tpnChucNang.RowCount = 1;
+            this.tpnChucNang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tpnChucNang.Size = new System.Drawing.Size(526, 50);
+            this.tpnChucNang.TabIndex = 41;
+            // 
             // btnConfirm
             // 
             this.btnConfirm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.btnConfirm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnConfirm.Enabled = false;
             this.btnConfirm.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnConfirm.Location = new System.Drawing.Point(267, 4);
             this.btnConfirm.Margin = new System.Windows.Forms.Padding(4);
@@ -579,6 +597,20 @@
             this.btnConfirm.Text = "Lưu";
             this.btnConfirm.UseVisualStyleBackColor = false;
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
+            // 
+            // btnUpdate
+            // 
+            this.btnUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnUpdate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdate.Location = new System.Drawing.Point(4, 4);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(4);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(255, 42);
+            this.btnUpdate.TabIndex = 18;
+            this.btnUpdate.Text = "Cập nhật";
+            this.btnUpdate.UseVisualStyleBackColor = false;
+            this.btnUpdate.Click += new System.EventHandler(this.btThem_Click);
             // 
             // rdoCongDan
             // 
@@ -607,35 +639,6 @@
             this.rdoQuanLy.Text = "Quản lý";
             this.rdoQuanLy.UseVisualStyleBackColor = true;
             this.rdoQuanLy.CheckedChanged += new System.EventHandler(this.rbQuanLy_CheckedChanged);
-            // 
-            // tpnChucNang
-            // 
-            this.tpnChucNang.ColumnCount = 2;
-            this.tpnChucNang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tpnChucNang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tpnChucNang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tpnChucNang.Controls.Add(this.btnConfirm, 1, 0);
-            this.tpnChucNang.Controls.Add(this.btnUpdate, 0, 0);
-            this.tpnChucNang.Location = new System.Drawing.Point(44, 45);
-            this.tpnChucNang.Name = "tpnChucNang";
-            this.tpnChucNang.RowCount = 1;
-            this.tpnChucNang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tpnChucNang.Size = new System.Drawing.Size(526, 50);
-            this.tpnChucNang.TabIndex = 41;
-            // 
-            // btnUpdate
-            // 
-            this.btnUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btnUpdate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdate.Location = new System.Drawing.Point(4, 4);
-            this.btnUpdate.Margin = new System.Windows.Forms.Padding(4);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(255, 42);
-            this.btnUpdate.TabIndex = 18;
-            this.btnUpdate.Text = "Cập nhật";
-            this.btnUpdate.UseVisualStyleBackColor = false;
-            this.btnUpdate.Click += new System.EventHandler(this.btThem_Click);
             // 
             // fThongTinCaNhan
             // 
