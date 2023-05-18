@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QuanLyCongDanThanhPho.DAO;
+using QuanLyCongDanThanhPho.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,36 +12,38 @@ using System.Windows.Forms;
 
 namespace QuanLyCongDanThanhPho
 {
-    public partial class fDangNhap : System.Windows.Forms.Form
+    public partial class fDangNhap : Form
     {
         public fDangNhap()
         {
             InitializeComponent();
         }
-
         private void btnLogin_Click(object sender, EventArgs e)
         {
             try
             {
-                CongDan cd = CongDanDAO.Instance.KiemTraDangNhap(tbxUserName.Text, tbxPassword.Text);
+                int account = int.Parse(txtAccount.Text);
+                string password = txtPassword.Text;
+                CongDan cd = AccountsDAO.Instance.AuthenticateAccount(account, password);
                 if (cd != null)
                 {
-                    fNguoiDung nd = new fNguoiDung(cd);
+                    TaiKhoan tk = AccountsDAO.Instance.GetAccount(account, password);
+                    KhaiSinh ks = KhaiSinhDAO.Instance.GetKhaiSinhByID(account);
+                    fNguoiDung nd = new fNguoiDung(cd,tk,ks);
                     this.Hide();
                     nd.ShowDialog();
                     this.Show();
                 }
                 else
                 {
-                    MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!");
+                    throw new Exception();
                 }
             }
-            catch(Exception ex)
+            catch
             {
-                MessageBox.Show("Đăng nhập thất bại!\n" + ex);
+                MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!\n");
             }
         }
-
         private void btnExit_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = MessageBox.Show("Bạn có thật sự muốn thoát không?", "Thông báo", MessageBoxButtons.YesNo);
@@ -48,22 +52,16 @@ namespace QuanLyCongDanThanhPho
                 Application.Exit();
             }
         }
-
-        private void cbHienMK_CheckedChanged(object sender, EventArgs e)
+        private void cbShowPassword_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbHienMK.Checked == true)
+            if (cbShowPassword.Checked == true)
             {
-                tbxPassword.UseSystemPasswordChar = false;
+                txtPassword.UseSystemPasswordChar = false;
             }
             else
             {
-                tbxPassword.UseSystemPasswordChar = true;
+                txtPassword.UseSystemPasswordChar = true;
             }
-        }
-
-        private void fDangNhap_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

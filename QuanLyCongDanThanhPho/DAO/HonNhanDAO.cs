@@ -10,7 +10,7 @@ namespace QuanLyCongDanThanhPho.DAO
 {
     internal class HonNhanDAO
     {
-        private readonly string HONNHAN = "HonNhan";
+        private readonly string HONNHAN = "People_Marriage";
         private readonly string MAHN = "MaHN";
         private readonly string MACDCHONG = "MaCDChong";
         private readonly string MACDVO = "MaCDVo";
@@ -19,17 +19,6 @@ namespace QuanLyCongDanThanhPho.DAO
         private readonly string XACNHANLAN1 = "XacNhanLan1";
         private readonly string XACNHANLAN2 = "XacnhanLan2";
         private readonly string TRANGTHAI = "TrangThai";
-
-        private readonly string MAIL = "Mail";
-        private readonly string MAMAIL = "MaMail";
-        private readonly string NGAY = "Ngay";
-        private readonly string TIEUDE = "TieuDe";
-        private readonly string NGUOIGUI = "NguoiGui";
-        private readonly string NGUOINHAN = "NguoiNhan";
-        private readonly string NOIDUNG = "NoiDung";
-
-        private readonly string tieude = "DonDangKyKetHon";
-
         private static HonNhanDAO instance;
         public static HonNhanDAO Instance
         {
@@ -40,28 +29,35 @@ namespace QuanLyCongDanThanhPho.DAO
                 return instance;
             }
         }
-        
+        public int GetMaHN(int macdchong, int macdvo)
+        {
+            string strSQL = string.Format($"SELECT* " +
+                                          $"FROM {HONNHAN} " +
+                                          $"WHERE {MACDCHONG} = {macdchong} AND {MACDVO} = {macdvo}");
+            DataTable dt = DBConnection.Instance.LayDanhSach(strSQL);
+            if (dt == null)
+                return -1;
+            int mahn = (int)dt.Rows[0]["MaHN"];
+            return mahn;
+        }
         public void CapNhatTrangThaiHonNhan(HonNhan hn)
         {
             try
             {
                 string strSQL = string.Format($"UPDATE {HONNHAN} SET {TRANGTHAI} = N'{hn.Trangthai}' WHERE {MAHN} = {hn.Mahn}");
-                string MaCdNam = hn.Macdchong;
-                string MaCdNu = hn.Macdvo;
-                string DaKetHon = "Đã kêt hôn";
+                int MaCdNam = hn.Macdchong;
+                int MaCdNu = hn.Macdvo;
                 if (!DBConnection.Instance.Execute(strSQL))
                 {
                     throw new Exception();
                 }
-                CongDanDAO.Instance.CapNhatTrangThaiHonNhan(MaCdNam,DaKetHon);
-                CongDanDAO.Instance.CapNhatTrangThaiHonNhan(MaCdNu, DaKetHon);
-
+                CongDanDAO.Instance.CapNhatTrangThaiHonNhan(MaCdNam,hn.Mahn);
+                CongDanDAO.Instance.CapNhatTrangThaiHonNhan(MaCdNu, hn.Mahn);
             }
             catch
             {
                 MessageBox.Show("Duyệt thất bại");
             }
-
         }
         public int GetMaHNMax()
         {
@@ -75,24 +71,44 @@ namespace QuanLyCongDanThanhPho.DAO
                 return -1;
             }
         }
-        public bool isExist(string macd)
+        public bool isExist(int macdNam, int macdNu, string loai)
         {
-            string strSQL = string.Format($"SELECT {MACDCHONG}, {MACDVO} FROM HonNhan WHERE {MACDCHONG} = '{macd}' OR {MACDVO} = '{macd}'");
+            string strSQL = string.Format($"SELECT {MACDCHONG}, {MACDVO} FROM {HONNHAN} WHERE ({MACDCHONG} = {macdNam} OR {MACDVO} = {macdNu}) OR ({MACDVO} = {macdNam} OR {MACDCHONG} = {macdNu})");
             DataTable dtHN = DBConnection.Instance.LayDanhSach(strSQL);
-            if (dtHN.Rows.Count > 0)
-                return true;
+            if (dtHN.Rows.Count == 1)
+            {
+                int GetMaCDNam = (int)dtHN.Rows[0][MACDCHONG];
+                int GetMaCDNu = (int)dtHN.Rows[0][MACDVO];
+                if(loai == "Ly hôn")
+                {
+                    if (macdNu == GetMaCDNu && macdNam == GetMaCDNam)
+                        return true;
+                }
+                else
+                {
+                    if (macdNam == GetMaCDNu || macdNam == GetMaCDNam)
+                        return true;
+                    if (macdNu == GetMaCDNam || macdNu == GetMaCDNu)
+                        return true;
+                }
+                return false;
+            }
             return false;
         }
-        public bool CheckXacNhan(string tk)
+        public bool CheckXacNhan(int Macd)
         {
-            string strSQL = string.Format($"SELECT {XACNHANLAN1},{XACNHANLAN2} FROM HonNhan WHERE {XACNHANLAN1} = '{tk}' OR {XACNHANLAN2} = '{tk}'");
+            string strSQL = string.Format($"SELECT {XACNHANLAN1},{XACNHANLAN2} " +
+                                          $"FROM {HONNHAN} " +
+                                          $"WHERE {XACNHANLAN1} = {Macd} OR {XACNHANLAN2} = {Macd}");
             return DBConnection.Instance.CheckXacNhan(strSQL);
         }
-        public void TimKiemHonNhan(DataGridView dtgv, CongDan cd, int mahn)
+        public void TimKiemHonNhan(DataGridView dtgv, int mahn)
         {
             try
             {
-                string strSQL = string.Format($"SELECT * FROM {HONNHAN} WHERE {MAHN} = {mahn} AND ({MACDCHONG} = '{cd.Macd}' OR {MACDVO} = '{cd.Macd}')");
+                string strSQL = string.Format($"SELECT * " +
+                                              $"FROM {HONNHAN} " +
+                                              $"WHERE {MAHN} = {mahn}"); 
                 DataTable dt = DBConnection.Instance.LayDanhSach(strSQL);
                 if(dt.Rows.Count > 0)
                     dtgv.DataSource = dt;
@@ -112,7 +128,7 @@ namespace QuanLyCongDanThanhPho.DAO
             try
             {
                 DataTable dtMail = DBConnection.Instance.LayDanhSach(strQuery);
-                if (dtMail.Rows.Count > 0)
+                if (dtMail != null)
                     dtgv.DataSource = dtMail;
                 else
                     dtgv.DataSource = null;
@@ -126,7 +142,10 @@ namespace QuanLyCongDanThanhPho.DAO
         {
             try
             {
-                string strQuery = string.Format($"SELECT * FROM {HONNHAN} WHERE {XACNHANLAN1} IS NOT NULL AND {XACNHANLAN2} IS NOT NULL AND {TRANGTHAI} = N'Chưa Duyệt'");
+                string strQuery = string.Format($"SELECT * " +
+                                                $"FROM {HONNHAN} " +
+                                                $"WHERE {XACNHANLAN1} IS NOT NULL AND {XACNHANLAN2} IS NOT NULL " +
+                                                $"AND {TRANGTHAI} = N'Chưa Duyệt'");
                 Load(dtgv, strQuery);
             }
             catch
@@ -138,7 +157,9 @@ namespace QuanLyCongDanThanhPho.DAO
         {
             try
             {
-                string strQuery = string.Format($"SELECT * FROM {HONNHAN} WHERE {MACDCHONG} = '{cd.Macd}' OR {MACDVO} = '{cd.Macd}'");
+                string strQuery = string.Format($"SELECT * " +
+                                                $"FROM {HONNHAN} " +
+                                                $"WHERE {MACDCHONG} = {cd.Macd} OR {MACDVO} = {cd.Macd}");
                 Load(dtgv, strQuery);
             }
             catch
@@ -148,53 +169,34 @@ namespace QuanLyCongDanThanhPho.DAO
         }
         public bool Create(HonNhan hn)
         {
-            string strQuery = string.Format($"INSERT INTO {HONNHAN}({MAHN},{MACDCHONG} , {MACDVO}, {LOAI}, {NGAYDANGKY},{XACNHANLAN1},{XACNHANLAN2},{TRANGTHAI}) " +
-                $"VALUES ('{hn.Mahn}', '{hn.Macdchong}', '{hn.Macdvo}','{hn.Loai}','{hn.Ngaydangky}','{hn.Xacnhanlan1}','{hn.Xacnhanlan2}','{hn.Trangthai}')");
+            string strQuery = string.Format($"INSERT INTO {HONNHAN}({MACDCHONG} , {MACDVO}, {LOAI}, {NGAYDANGKY},{TRANGTHAI}) " +
+                $"VALUES ( {hn.Macdchong}, {hn.Macdvo},N'{hn.Loai}','{hn.Ngaydangky}',N'{hn.Trangthai}')");
             return DBConnection.Instance.Execute(strQuery);
         }
-        public List<HonNhan> Read()
+        public HonNhan ReadByID(int MaCDChong, int MaCDVo)
         {
-            List<HonNhan> cds = new List<HonNhan>();
-            string strQuery = string.Format($"SELECT * FROM {HONNHAN}");
+            string strQuery = string.Format($"SELECT * FROM {HONNHAN} WHERE ({MACDCHONG} = {MaCDChong} AND {MACDVO} = {MaCDVo}) OR ({MACDCHONG} = {MaCDVo} AND {MACDVO} = {MaCDChong})");
             DataTable dataTable = DBConnection.Instance.LayDanhSach(strQuery);
-            foreach (DataRow item in dataTable.Rows)
-            {
-                HonNhan hoSo = new HonNhan(item);
-                if (hoSo != null)
-                    cds.Add(hoSo);
-            }
-            return cds;
+            if(dataTable == null)
+                return null;
+            HonNhan honNhan = new HonNhan(dataTable.Rows[0]);
+            return honNhan;
         }
-        public HonNhan ReadByID(string MaCDChong, string MaCDVo)
+        public HonNhan ReadByID(int Macd)
         {
-            string strQuery = string.Format($"SELECT * FROM {HONNHAN} WHERE {MACDCHONG} = '{MaCDChong}' AND {MACDVO} = '{MaCDVo}'");
-
+            string strQuery = string.Format($"SELECT * FROM {HONNHAN} WHERE {MACDCHONG} = {Macd} OR {MACDVO} = {Macd}");
             DataTable dataTable = DBConnection.Instance.LayDanhSach(strQuery);
             HonNhan honNhan = new HonNhan(dataTable.Rows[0]);
             return honNhan;
         }
-        public bool Fill(string id, List<Control> lct)
-        {
-            DataTable congDan = CongDanDAO.Instance.LayDanhSach(id);
-            int i = 0;
-            if (congDan.Rows.Count > 0)
-            {
-                foreach (Control c in lct)
-                {
-                    c.Text = congDan.Rows[0][i++].ToString();
-                }
-                return true;
-            }
-            return false;
-        }
-        public void Update(HonNhan hn, string xacNhan, string lanXacNhan)
+        public void Update(HonNhan hn, int xacNhan, string lanXacNhan)
         {
             try
             {
                 string strQuery = string.Format(
                     $"UPDATE {HONNHAN} " +
-                    $"SET {lanXacNhan} = '{xacNhan}' " +
-                    $"WHERE {MACDCHONG} = '{hn.Macdchong}' AND {MACDVO} = '{hn.Macdvo}'");
+                    $"SET {lanXacNhan} = {xacNhan} " +
+                    $"WHERE {MACDCHONG} = {hn.Macdchong} AND {MACDVO} = {hn.Macdvo}");
                 if (DBConnection.Instance.Execute(strQuery))
                 {
                     MessageBox.Show("Cập nhật thành công");
@@ -207,34 +209,70 @@ namespace QuanLyCongDanThanhPho.DAO
                 MessageBox.Show("Cập nhật Thất bại");
             }
         }
-        public void Delete(HonNhan hn)
+        public bool Delete(HonNhan hn)
         {
             try
             {
-                string strQuery = string.Format($"DELETE FROM {HONNHAN} WHERE {MAHN} = '{hn.Mahn}'");
-                if (DBConnection.Instance.Execute(strQuery))
-                {
-                    MessageBox.Show("Xóa thành công");
-                }
-                else
-                    throw new Exception();
+                string strQuery = string.Format($"DELETE FROM {HONNHAN} " +
+                                                $"WHERE {MAHN} = {hn.Mahn}");
+                return DBConnection.Instance.Execute(strQuery);
             }
             catch
             {
-                MessageBox.Show("Xóa Thất bại");
+                return false;
             }
         }
-
         public void SendForm(HonNhan hn)
         {
-            ;
-            if (Create(hn))
+            if(hn.Loai == "Kết hôn")
             {
-                MessageBox.Show("Gửi thành công");
+                if (Create(hn))
+                {
+                    MessageBox.Show("Gửi thành công");
+                }
+                else
+                {
+                    MessageBox.Show("Gửi thất bại");
+                }
             }
-            else
+            else if (hn.Loai == "Ly hôn")
             {
-                MessageBox.Show("Gửi thất bại");
+                if (ConvertMarriageToDivorce(hn))
+                {
+                    MessageBox.Show("Gửi thành công");
+                }
+                else
+                {
+                    MessageBox.Show("Gửi thất bại");
+                }
+            }
+        }
+        public bool ConvertDivorceToMarriage(HonNhan hn)
+        {
+            try
+            {
+                string strSQL = string.Format($"UPDATE {HONNHAN} SET {LOAI} = N'Kết hôn', {XACNHANLAN1} = {hn.Macdchong}, {XACNHANLAN2} = {hn.Macdvo}, {TRANGTHAI} = N'Đã duyệt' WHERE {HONNHAN}.{MAHN} = {hn.Mahn}");
+                if (DBConnection.Instance.Execute(strSQL))
+                    return true;
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool ConvertMarriageToDivorce(HonNhan hn)
+        {
+            try
+            {
+                string strSQL = string.Format($"UPDATE {HONNHAN} SET {LOAI} = N'Ly hôn', {XACNHANLAN1} = NULL, {XACNHANLAN2} = NULL, {TRANGTHAI} = N'{hn.Trangthai}' WHERE {HONNHAN}.{MAHN} = {hn.Mahn}");
+                if (DBConnection.Instance.Execute(strSQL))
+                    return true;
+                return false;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

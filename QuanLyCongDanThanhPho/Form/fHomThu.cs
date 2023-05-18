@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuanLyCongDanThanhPho.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,70 +13,63 @@ namespace QuanLyCongDanThanhPho
 {
     public partial class fHomThu : Form
     {
-        CongDan cd = new CongDan();
-
+        CongDan cd;
         public fHomThu() { }
-
         public fHomThu(CongDan congdan)
         {
             InitializeComponent();
             cd = congdan;
         }
-
         private void fHomThu_Load(object sender, EventArgs e)
         {
-            dtgvHomThu.DataSource = MailDAO.Instance.LayDanhSachNhan(cd.Tentk);
-            tbNguoiGui.Text = cd.Tentk;
+            dtgvHomThu.DataSource = MailDAO.Instance.LayDanhSachNhan(cd.Macd);
+            tbNguoiGui.Text = cd.Macd.ToString();
             cbNguoiNhan.DataSource = MailDAO.Instance.LayDanhSachNguoiNhan();
             cbNguoiNhan.DisplayMember = "TenTK";
             cbNguoiNhan.Text = "";
         }
-
         void ResetThongTinRong()
         {
             tbMaMail.Text = "";
             tbTieuDe.Text = "";
             dtpkNgay.Value = DateTime.Today;
-            tbNguoiGui.Text = cd.Tentk;
+            tbNguoiGui.Text = cd.Macd.ToString();
             cbNguoiNhan.Text = "";
             rtbNoiDung.Text = "";
         }
-
         bool KiemTraThongTinRong(Mail mail)
         {
-            if (mail.Tieude == "" || mail.Ngay == "" || mail.Nguoigui == "" || mail.Nguoinhan == "")
+            if (mail.Tieude == "" || mail.Ngay == "")
                 return true;
             else
                 return false;
         }
-
         private void rbThuGui_CheckedChanged(object sender, EventArgs e)
         {
-            dtgvHomThu.DataSource = MailDAO.Instance.LayDanhSachGui(cd.Tentk);
+            dtgvHomThu.DataSource = MailDAO.Instance.LayDanhSachGui(cd.Macd);
         }
-
         private void rbThuNhan_CheckedChanged(object sender, EventArgs e)
         {
-            dtgvHomThu.DataSource = MailDAO.Instance.LayDanhSachNhan(cd.Tentk);
+            dtgvHomThu.DataSource = MailDAO.Instance.LayDanhSachNhan(cd.Macd);
         }
-
         void ReloadDanhSach()
         {
             if (rbThuGui.Checked == true)
             {
-                dtgvHomThu.DataSource = MailDAO.Instance.LayDanhSachGui(cd.Tentk);
+                dtgvHomThu.DataSource = MailDAO.Instance.LayDanhSachGui(cd.Macd);
             }
             else
             {
-                dtgvHomThu.DataSource = MailDAO.Instance.LayDanhSachNhan(cd.Tentk);
+                dtgvHomThu.DataSource = MailDAO.Instance.LayDanhSachNhan(cd.Macd);
             }
         }
-
         private void btGui_Click(object sender, EventArgs e)
         {
             try
             {
-                Mail mail = new Mail(tbTieuDe.Text, dtpkNgay.Text, tbNguoiGui.Text, cbNguoiNhan.Text, rtbNoiDung.Text);
+                int nguoigui = int.Parse(tbNguoiGui.Text);
+                int nguoinhan = int.Parse(cbNguoiNhan.Text);
+                Mail mail = new Mail(tbTieuDe.Text, dtpkNgay.Text, nguoigui, nguoinhan, rtbNoiDung.Text);
                 if (KiemTraThongTinRong(mail) == true)
                     MessageBox.Show("Thông tin không hợp lệ!");
                 else
@@ -90,7 +84,6 @@ namespace QuanLyCongDanThanhPho
                 MessageBox.Show("Thêm thất bại\n" + ex);
             }
         }
-
         private void dtgvHomThu_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             dtgvHomThu.CurrentRow.Selected = true;
@@ -101,17 +94,17 @@ namespace QuanLyCongDanThanhPho
             cbNguoiNhan.Text = dtgvHomThu.SelectedRows[0].Cells[4].Value.ToString();
             rtbNoiDung.Text = dtgvHomThu.SelectedRows[0].Cells[5].Value.ToString();
         }
-
         private void btDatLai_Click(object sender, EventArgs e)
         {
             ResetThongTinRong();
         }
-
         private void btXoa_Click(object sender, EventArgs e)
         {
             try
             {
-                Mail mail = new Mail(Convert.ToInt32(tbMaMail.Text), tbTieuDe.Text, dtpkNgay.Text, tbNguoiGui.Text, cbNguoiNhan.Text, rtbNoiDung.Text);
+                int nguoigui = int.Parse(tbNguoiGui.Text);
+                int nguoinhan = int.Parse(cbNguoiNhan.Text);
+                Mail mail = new Mail(Convert.ToInt32(tbMaMail.Text), tbTieuDe.Text, dtpkNgay.Text, nguoigui, nguoinhan, rtbNoiDung.Text);
                 MailDAO.Instance.Xoa(mail);
                 ReloadDanhSach();
                 ResetThongTinRong();
@@ -121,10 +114,10 @@ namespace QuanLyCongDanThanhPho
                 MessageBox.Show("Xóa thất bại\n" + ex);
             }
         }
-
         private void tbNguoiGui_TextChanged(object sender, EventArgs e)
         {
-            if (tbNguoiGui.Text == cd.Tentk)
+            int nguoigui = int.Parse(tbNguoiGui.Text);
+            if (nguoigui == cd.Macd)
             {
                 btGui.Enabled = true;
                 btXoa.Enabled = true;
@@ -137,17 +130,17 @@ namespace QuanLyCongDanThanhPho
                 btSua.Enabled = false;
             }
         }
-
         private void btXem_Click(object sender, EventArgs e)
         {
             ReloadDanhSach();
         }
-
         private void btSua_Click(object sender, EventArgs e)
         {
             try
             {
-                Mail mail = new Mail(Convert.ToInt32(tbMaMail.Text), tbTieuDe.Text, dtpkNgay.Text, tbNguoiGui.Text, cbNguoiNhan.Text, rtbNoiDung.Text);
+                int nguoigui = int.Parse(tbNguoiGui.Text);
+                int nguoinhan = int.Parse(cbNguoiNhan.Text);
+                Mail mail = new Mail(Convert.ToInt32(tbMaMail.Text), tbTieuDe.Text, dtpkNgay.Text, nguoigui, nguoinhan, rtbNoiDung.Text);
                 if (KiemTraThongTinRong(mail) == true)
                     MessageBox.Show("Thông tin không hợp lệ!");
                 else
@@ -162,7 +155,6 @@ namespace QuanLyCongDanThanhPho
                 MessageBox.Show("Sửa thất bại\n" + ex);
             }
         }
-
         private void tbMaMail_TextChanged(object sender, EventArgs e)
         {
             if (tbMaMail.Text == "")
@@ -178,17 +170,23 @@ namespace QuanLyCongDanThanhPho
                 btSua.Enabled = true;
             }
         }
-
         private void btTimKiem_Click(object sender, EventArgs e)
         {
-            string find = tbTimKiem.Text;
-            if (rbThuGui.Checked == true)
+            try
             {
-                dtgvHomThu.DataSource = MailDAO.Instance.TimKiemDanhSachGui(cd.Tentk ,find);
+                string find = tbTimKiem.Text;
+                if (rbThuGui.Checked == true)
+                {
+                    dtgvHomThu.DataSource = MailDAO.Instance.TimKiemDanhSachGui(cd.Macd, find);
+                }
+                else
+                {
+                    dtgvHomThu.DataSource = MailDAO.Instance.TimKiemDanhSachNhan(cd.Macd, find);
+                }
             }
-            else
+            catch
             {
-                dtgvHomThu.DataSource = MailDAO.Instance.TimKiemDanhSachNhan(cd.Tentk, find);
+                MessageBox.Show("Không hợp lệ");
             }
         }
     }

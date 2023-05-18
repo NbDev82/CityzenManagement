@@ -10,8 +10,8 @@ namespace QuanLyCongDanThanhPho.DAO
 {
     internal class HoKhauDAO
     {
-        private readonly string HOKHAU = "HoKhau";
-        private readonly string CHITIETHOKHAU = "ChiTietHoKhau";
+        private readonly string HOKHAU = "Households";
+        private readonly string CHITIETHOKHAU = "Detail_Households";
         private readonly string MAHO = "MaHo";
         private readonly string CHUHO = "ChuHo";
         private readonly string TINHTHANH = "TinhThanh";
@@ -19,12 +19,11 @@ namespace QuanLyCongDanThanhPho.DAO
         private readonly string PHUONGXA = "PhuongXa";
         private readonly string NGAYDANGKY = "NgayDangKy";
         private readonly string TRANGTHAI = "TrangThai";
-
         private readonly string MACD = "MaCD";
         private readonly string TINHTRANGCUTRU = "TinhTrangCuTru";
         private readonly string QUANHEVOICHUHO = "QuanHeVoiChuHo";
-
-        private readonly string CONGDAN = "CongDan";
+        private readonly string CONGDAN = "Citizens";
+        private readonly string KHAISINH = "Births";
         private static HoKhauDAO instance;
         public static HoKhauDAO Instance
         {
@@ -35,22 +34,22 @@ namespace QuanLyCongDanThanhPho.DAO
                 return instance;
             }
         } 
-        public DataTable LayThongTinThanhVien(string macd)
+        public DataTable LayThongTinThanhVien(int macd)
         {
             string strSQL = string.Format($"" +
                 $"SELECT * " +
-                $"FROM {CONGDAN}, {CHITIETHOKHAU} " +
-                $"WHERE {CONGDAN}.{MACD} = {CHITIETHOKHAU}.{MACD} AND {CONGDAN}.{MACD} = '{macd}'");
+                $"FROM {CONGDAN}, {CHITIETHOKHAU}, {KHAISINH} " +
+                $"WHERE {CONGDAN}.{MACD} = {CHITIETHOKHAU}.{MACD} AND {CONGDAN}.{MACD} = {KHAISINH}.{MACD} AND {CONGDAN}.{MACD} = {macd}");
             DataTable dt = DBConnection.Instance.LayDanhSach(strSQL);
             return dt;
         }
-        public int LayMaHo(string Macd)
+        public int LayMaHo(int Macd)
         {
             try
             {
-                string strSQL = string.Format($"SELECT {MAHO} FROM {CHITIETHOKHAU} WHERE {MACD} = '{Macd}'");
+                string strSQL = string.Format($"SELECT {MAHO} FROM {CHITIETHOKHAU} WHERE {MACD} = {Macd}");
                 DataTable dt = DBConnection.Instance.LayDanhSach(strSQL);
-                int maHo = int.Parse(dt.Rows[0]["MaHo"].ToString());
+                int maHo = (int)dt.Rows[0][MAHO];
                 return maHo;
             }
             catch
@@ -60,7 +59,7 @@ namespace QuanLyCongDanThanhPho.DAO
         }
         public bool Fill(int MaHo, List<Control> ltext)
         {
-            DataTable HoKhau = LayDanhSach(MaHo,"HoKhau");
+            DataTable HoKhau = LayDanhSach(MaHo,HOKHAU);
             if (HoKhau.Rows.Count > 0)
             {
                 int i = 0;
@@ -78,7 +77,7 @@ namespace QuanLyCongDanThanhPho.DAO
             DataTable HoKhau = DBConnection.Instance.LayDanhSach(strSQL);
             return HoKhau;
         }
-        public DataTable LayDanhSachHoKhau(int maHo)
+        public DataTable GetHoKhauByID(int maHo)
         {
             try
             {
@@ -94,7 +93,7 @@ namespace QuanLyCongDanThanhPho.DAO
             }
             return null;
         }
-        public DataTable LayDanhSachHoKhau()
+        public DataTable GetHoKhau()
         {
             try
             {
@@ -110,12 +109,12 @@ namespace QuanLyCongDanThanhPho.DAO
             }
             return null;
         }
-        public bool Add(string macd, string MaHo, string quanhe)
+        public bool AddToChiTietHoKhau(int macd, int MaHo, string quanhe)
         {
             try
             {
                 string strSQL = string.Format($"INSERT INTO {CHITIETHOKHAU}({MAHO},{MACD},{TINHTRANGCUTRU},{QUANHEVOICHUHO},{NGAYDANGKY},{TRANGTHAI}) " +
-                                              $"VALUES({MaHo},N'{macd}',N'Thường trú',N'{quanhe}',N'{DateTime.Now}',N'Chưa Duyệt')");
+                                              $"VALUES({MaHo},{macd},N'Thường trú',N'{quanhe}',N'{DateTime.Now}',N'Chưa Duyệt')");
                 if (DBConnection.Instance.Execute(strSQL))
                     return true;
                 return false;
@@ -125,15 +124,37 @@ namespace QuanLyCongDanThanhPho.DAO
                 return false;
             }
         }
-        public bool Add(HoKhau hk)
+        public int LayMaHoTuHoKhau(int Machuho)
+        {
+            try
+            {
+                string strSQL = string.Format($"SELECT * FROM {HOKHAU} WHERE ChuHo = {Machuho} ");
+                DataTable dt = DBConnection.Instance.LayDanhSach(strSQL);
+                int maho = (int)dt.Rows[0]["MaHo"];
+                return maho;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+        public bool AddToHoKhau(HoKhau hk)
         {
             try
             {
                 string trangThai = hk.Trangthai == 1 ? "Đã Duyệt" : "Chưa Duyệt";
                 string strSQL = string.Format($"INSERT INTO {HOKHAU}({CHUHO},{TINHTHANH},{QUANHUYEN},{PHUONGXA},{NGAYDANGKY},{TRANGTHAI}) " +
-                                              $"VALUES('{hk.Chuho}','{hk.Tinhthanh}','{hk.Quanhuyen}','{hk.Phuongxa}','{hk.Ngaydangky}','{trangThai}')");
+                                              $"VALUES({hk.Chuho},N'{hk.Tinhthanh}',N'{hk.Quanhuyen}',N'{hk.Phuongxa}',N'{hk.Ngaydangky}',N'{trangThai}')");
                 if (DBConnection.Instance.Execute(strSQL))
+                {
+                    int MaHo = LayMaHoTuHoKhau(hk.Chuho);
+                    if (MaHo < 0)
+                        return false;
+                    string addToDetailHouseholds = string.Format($"INSERT INTO {CHITIETHOKHAU}(MaHo,MaCD,{TINHTRANGCUTRU},{QUANHEVOICHUHO},{NGAYDANGKY},{TRANGTHAI}) " +
+                                                                 $"VALUES({MaHo},N'{hk.Chuho}',N'Thường trú',N'Chủ hộ',N'{hk.Ngaydangky}',N'{trangThai}')");
+                    DBConnection.Instance.Execute(addToDetailHouseholds);
                     return true;
+                }
                 return false;
             }
             catch
@@ -141,14 +162,9 @@ namespace QuanLyCongDanThanhPho.DAO
                 return false;
             }
         }
-        public bool Update(CongDan cd)
+        public bool Delete(int macd)
         {
-
-            return true;
-        }
-        public bool Delete(string macd)
-        {
-            string strSQL = string.Format($"DELETE FROM {CHITIETHOKHAU} WHERE {MACD} = '{macd}'");
+            string strSQL = string.Format($"DELETE FROM {CHITIETHOKHAU} WHERE {MACD} = {macd} ");
             return DBConnection.Instance.Execute(strSQL);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using QuanLyCongDanThanhPho.DAO;
+using QuanLyCongDanThanhPho.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,14 +12,15 @@ using System.Windows.Forms;
 
 namespace QuanLyCongDanThanhPho
 {
-    public partial class fHoKhau : System.Windows.Forms.Form
+    public partial class fHoKhau : Form
     {
-        fNguoiDung nguoidung = new fNguoiDung();
         CongDan cd;
-        public fHoKhau(CongDan user)
+        TaiKhoan tk;
+        public fHoKhau(CongDan user, TaiKhoan tk)
         {
             InitializeComponent();
             cd = user;
+            this.tk = tk;
         }
         private void Fill(DataRow dtCD)
         {
@@ -30,7 +32,7 @@ namespace QuanLyCongDanThanhPho
             txtNgheNghiep.Text = dtCD["NgheNghiep"].ToString();
             txtDanToc.Text = dtCD["DanToc"].ToString();
             txtTonGiao.Text = dtCD["TonGiao"].ToString();
-            txtHonNhan.Text = dtCD["HonNhan"].ToString();
+            txtHonNhan.Text = dtCD["MaHN"].ToString();
             txtTinhTrang.Text = dtCD["TinhTrang"].ToString();
             txtQuanHe.Text = dtCD["QuanHeVoiChuHo"].ToString();
         }
@@ -54,7 +56,7 @@ namespace QuanLyCongDanThanhPho
         }
         public void HoKhauLoad()
         {
-            string macd = cd.Macd;
+            int macd = cd.Macd;
             int MaHo = HoKhauDAO.Instance.LayMaHo(macd);
             List<Control> ltext = new List<Control>();
             ltext.Add(txtMaHo);
@@ -62,18 +64,9 @@ namespace QuanLyCongDanThanhPho
             ltext.Add(txtTinhThanh);
             ltext.Add(txtQuanHuyen);
             ltext.Add(txtPhuongXa);
-            if (HoKhauDAO.Instance.Fill(MaHo, ltext))
-            {
-                if (cd.Loaitk == "Công Dân")
-                {
-                    pnChucNang.Enabled = false;
-                    pnThongTinHoKhau.Enabled = false;
-                }
-            }
-            else
-            {
-                pnThongTinHoKhau.Enabled = true;
-            }  
+            HoKhauDAO.Instance.Fill(MaHo, ltext);
+            pnChucNang.Enabled = false;
+            pnThongTinHoKhau.Enabled = false;
         }
         private void fHoKhau_Load(object sender, EventArgs e)
         {
@@ -88,8 +81,7 @@ namespace QuanLyCongDanThanhPho
                 DataTable CurrentRow = (DataTable)dtgvChiTietHoKhau.DataSource;
                 if (CurrentRow != null)
                 {
-                    string maCd = (string)CurrentRow.Rows[index]["MaCD"];
-                    
+                    int maCd = (int)CurrentRow.Rows[index]["MaCD"];
                     DataTable dt = HoKhauDAO.Instance.LayThongTinThanhVien(maCd);
                     DataRow dtCD = dt.Rows[0];
                     if (dtCD == null)
@@ -98,7 +90,6 @@ namespace QuanLyCongDanThanhPho
                 }
                 else
                     throw new Exception();
-
             }
             catch
             {
@@ -114,7 +105,7 @@ namespace QuanLyCongDanThanhPho
             try
             {
                 int MaHo = int.Parse(txtTimKiem.Text);
-                DataTable dt = HoKhauDAO.Instance.LayDanhSachHoKhau(MaHo);
+                DataTable dt = HoKhauDAO.Instance.GetHoKhauByID(MaHo);
                 if (dt != null)
                     dtgvDanhSachHoKhau.DataSource = dt;
             }
@@ -137,12 +128,13 @@ namespace QuanLyCongDanThanhPho
         {
             HoKhauLoad();
             pnThongTinHoKhau.Enabled = false;
+            rdoCongDan.Checked = true;
         }
         private void btnXem_Click(object sender, EventArgs e)
         {
             try
             {
-                DataTable dt = HoKhauDAO.Instance.LayDanhSachHoKhau();
+                DataTable dt = HoKhauDAO.Instance.GetHoKhau();
                 dtgvDanhSachHoKhau.DataSource = dt;
             }
             catch
@@ -178,22 +170,19 @@ namespace QuanLyCongDanThanhPho
         }
         private void rdoQuanLy_CheckedChanged(object sender, EventArgs e)
         {
-            if(cd.Loaitk == "Quản lý")
+            if (rdoQuanLy.Checked)
             {
-                if (rdoQuanLy.Checked)
+                if (tk.Phanquyen == 1)
                 {
                     pnChucNang.Enabled = true;
                 }
                 else
                 {
+                    rdoCongDan.Checked = true;
                     pnChucNang.Enabled = false;
+                    MessageBox.Show("Bạn không có quyền này");
                 }
             }
-            else
-            {
-                MessageBox.Show("Bạn không có quyền này");
-            }  
-
         }
         private void btnGui_Click(object sender, EventArgs e)
         {
@@ -204,20 +193,22 @@ namespace QuanLyCongDanThanhPho
                     MessageBox.Show("Không trong chế độ đăng ký hộ khẩu");
                     return;
                 }
-                string MaCD = txtChuHo.Text;
+                int MaCD = cd.Macd;
                 int maHo = HoKhauDAO.Instance.LayMaHo(MaCD);
                 if (maHo > 0)
                 {
                     MessageBox.Show("Công dân đã có hộ khẩu");
                     return;
                 }
-                CongDan chuHo = CongDanDAO.Instance.LayCongDanBangID(MaCD);
+                CongDan chuHo = CongDanDAO.Instance.GetCongDanByMaCD(MaCD);
                 string TinhThanh = txtTinhThanh.Text;
                 string PhuongXa = txtPhuongXa.Text;
                 string QuanHuyen = txtQuanHuyen.Text;
-
-                HoKhau hoKhauMoi = new HoKhau("", MaCD, TinhThanh, QuanHuyen, PhuongXa, 0, DateTime.Now.ToString());
-                HoKhauDAO.Instance.Add(hoKhauMoi);
+                HoKhau hoKhauMoi = new HoKhau(0, MaCD, TinhThanh, QuanHuyen, PhuongXa, 0, DateTime.Now.ToString());
+                if (HoKhauDAO.Instance.AddToHoKhau(hoKhauMoi))
+                    MessageBox.Show("Tạo hộ khẩu thành công");
+                else
+                    MessageBox.Show("Tạo hộ khẩu thất bại");
             }
             catch
             {
@@ -235,6 +226,7 @@ namespace QuanLyCongDanThanhPho
                 TatChinhSua();
                 pnChinhSuaThongTinThanhVien.Enabled = false;
                 pnThongTin.Enabled = false;
+                pnChucNang.Enabled = false;
             }
             else
             {
@@ -245,31 +237,39 @@ namespace QuanLyCongDanThanhPho
         {
             try
             {
-                if (!HoKhauDAO.Instance.Add(txtMaCD.Text, txtMaHo.Text, txtQuanHe.Text))
+                int MaCD = int.Parse(txtMaCD.Text);
+                int MaHo = int.Parse(txtMaHo.Text);
+                if(txtQuanHe.Text == "")
+                {
+                    MessageBox.Show("Quan hệ không được để trống");
+                    return;
+                }
+                if (!HoKhauDAO.Instance.AddToChiTietHoKhau(MaCD, MaHo, txtQuanHe.Text))
                     throw new Exception();
                 MessageBox.Show("Thêm thành công");
                 LayDanhSachChiTietHoKhau();
             }
             catch
             {
-                MessageBox.Show("Công dân đã tòn tại trong hộ khẩu hoặc sai mã công dân");
+                MessageBox.Show("Công dân đã có hộ khẩu hoặc sai mã công dân");
             }
         }
         private void btnDien_Click(object sender, EventArgs e)
         {
             try
             {
-                string Macd = txtMaCD.Text;
-                CongDan cdChild = CongDanDAO.Instance.LayCongDanBangID(txtMaCD.Text);
-                txtHoTen.Text = cd.Hoten;
-                txtNgaySinh.Text = cd.Ngaysinh;
-                txtNoiSinh.Text = cd.Noisinh;
-                txtGioiTinh.Text = cd.Gioitinh;
-                txtNgheNghiep.Text = cd.Nghenghiep;
-                txtDanToc.Text = cd.Dantoc;
-                txtTonGiao.Text = cd.Tongiao;
-                txtHonNhan.Text = cd.Honnhan;
-                txtTinhTrang.Text = cd.Tinhtrang;
+                int Macd = int.Parse(txtMaCD.Text);
+                CongDan cdChild = CongDanDAO.Instance.GetCongDanByMaCD(Macd);
+                KhaiSinh khaiSinh = KhaiSinhDAO.Instance.GetKhaiSinhByID(Macd);
+                txtHoTen.Text = cdChild.Hoten;
+                txtNgaySinh.Text = khaiSinh.NgaySinh;
+                txtNoiSinh.Text = khaiSinh.NoiSinh;
+                txtGioiTinh.Text = cdChild.Gioitinh;
+                txtNgheNghiep.Text = cdChild.Nghenghiep;
+                txtDanToc.Text = cdChild.Dantoc;
+                txtTonGiao.Text = cdChild.Tongiao;
+                txtHonNhan.Text = cdChild.Mahonnhan.ToString();
+                txtTinhTrang.Text = cdChild.Tinhtrang;
             }
             catch
             {
@@ -278,15 +278,16 @@ namespace QuanLyCongDanThanhPho
         }
         public void LayDanhSachChiTietHoKhau()
         {
-            int MaHo = int.Parse(txtMaHo.Text);
-            DataTable dt = HoKhauDAO.Instance.LayDanhSach(MaHo, "ChiTietHoKhau");
+            int macd = int.Parse(txtChuHo.Text);
+            int MaHo = HoKhauDAO.Instance.LayMaHo(macd);
+            DataTable dt = HoKhauDAO.Instance.LayDanhSach(MaHo, "Detail_Households");
             dtgvChiTietHoKhau.DataSource = dt;
         }
         private void btnXoa_Click(object sender, EventArgs e)
         {
             try
             {
-                string macd = txtMaCD.Text;
+                int macd = int.Parse(txtMaCD.Text);
                 if (IsExist(macd) && HoKhauDAO.Instance.Delete(macd))
                 {
                     MessageBox.Show("Xóa thành công");
@@ -301,15 +302,15 @@ namespace QuanLyCongDanThanhPho
             }
             
         }
-        public bool IsExist(string macd)
+        public bool IsExist(int macd)
         {
             try
             {
                 foreach (DataGridViewRow row in dtgvChiTietHoKhau.Rows)
                 {
-                    string Ma = row.Cells["MaCD"].Value.ToString();
+                    int Ma = (int)row.Cells["MaCD"].Value;
                     string quanHe = row.Cells["QuanHeVoiChuHo"].Value.ToString();
-                    if (Ma == macd && quanHe != "Là chủ hộ")
+                    if (Ma == macd && quanHe != "Chủ hộ")
                     {
                         return true;
                     }

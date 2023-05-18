@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="cnnStr" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Data Source=(localdb)\mssqllocaldb;Initial Catalog=QuanLyCongDanThanhPho;Integrated Security=True</Value>
+      <Value Profile="(Default)">Data Source=(localdb)\mssqllocaldb;Initial Catalog=Backup_CityzenManagement;Integrated Security=True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

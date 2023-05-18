@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.tbxUserName = new System.Windows.Forms.TextBox();
+            this.txtAccount = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.tbxPassword = new System.Windows.Forms.TextBox();
+            this.txtPassword = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.cbHienMK = new System.Windows.Forms.CheckBox();
+            this.cbShowPassword = new System.Windows.Forms.CheckBox();
             this.btnLogin = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
@@ -43,7 +43,7 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.tbxUserName);
+            this.panel1.Controls.Add(this.txtAccount);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(16, 15);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
@@ -51,14 +51,15 @@
             this.panel1.Size = new System.Drawing.Size(668, 58);
             this.panel1.TabIndex = 0;
             // 
-            // tbxUserName
+            // txtAccount
             // 
-            this.tbxUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxUserName.Location = new System.Drawing.Point(237, 10);
-            this.tbxUserName.Margin = new System.Windows.Forms.Padding(4);
-            this.tbxUserName.Name = "tbxUserName";
-            this.tbxUserName.Size = new System.Drawing.Size(413, 34);
-            this.tbxUserName.TabIndex = 0;
+            this.txtAccount.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAccount.Location = new System.Drawing.Point(237, 10);
+            this.txtAccount.Margin = new System.Windows.Forms.Padding(4);
+            this.txtAccount.Name = "txtAccount";
+            this.txtAccount.Size = new System.Drawing.Size(413, 34);
+            this.txtAccount.TabIndex = 0;
+            this.txtAccount.Text = "1";
             // 
             // label1
             // 
@@ -73,7 +74,7 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.tbxPassword);
+            this.panel2.Controls.Add(this.txtPassword);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Location = new System.Drawing.Point(16, 80);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
@@ -81,15 +82,16 @@
             this.panel2.Size = new System.Drawing.Size(668, 58);
             this.panel2.TabIndex = 1;
             // 
-            // tbxPassword
+            // txtPassword
             // 
-            this.tbxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxPassword.Location = new System.Drawing.Point(237, 10);
-            this.tbxPassword.Margin = new System.Windows.Forms.Padding(4);
-            this.tbxPassword.Name = "tbxPassword";
-            this.tbxPassword.Size = new System.Drawing.Size(413, 34);
-            this.tbxPassword.TabIndex = 2;
-            this.tbxPassword.UseSystemPasswordChar = true;
+            this.txtPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPassword.Location = new System.Drawing.Point(237, 10);
+            this.txtPassword.Margin = new System.Windows.Forms.Padding(4);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(413, 34);
+            this.txtPassword.TabIndex = 2;
+            this.txtPassword.Text = "12345";
+            this.txtPassword.UseSystemPasswordChar = true;
             // 
             // label2
             // 
@@ -102,18 +104,18 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Mật khẩu:";
             // 
-            // cbHienMK
+            // cbShowPassword
             // 
-            this.cbHienMK.AutoSize = true;
-            this.cbHienMK.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbHienMK.Location = new System.Drawing.Point(467, 145);
-            this.cbHienMK.Margin = new System.Windows.Forms.Padding(4);
-            this.cbHienMK.Name = "cbHienMK";
-            this.cbHienMK.Size = new System.Drawing.Size(200, 33);
-            this.cbHienMK.TabIndex = 13;
-            this.cbHienMK.Text = "Hiện mật khẩu";
-            this.cbHienMK.UseVisualStyleBackColor = true;
-            this.cbHienMK.CheckedChanged += new System.EventHandler(this.cbHienMK_CheckedChanged);
+            this.cbShowPassword.AutoSize = true;
+            this.cbShowPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbShowPassword.Location = new System.Drawing.Point(467, 145);
+            this.cbShowPassword.Margin = new System.Windows.Forms.Padding(4);
+            this.cbShowPassword.Name = "cbShowPassword";
+            this.cbShowPassword.Size = new System.Drawing.Size(200, 33);
+            this.cbShowPassword.TabIndex = 13;
+            this.cbShowPassword.Text = "Hiện mật khẩu";
+            this.cbShowPassword.UseVisualStyleBackColor = true;
+            this.cbShowPassword.CheckedChanged += new System.EventHandler(this.cbShowPassword_CheckedChanged);
             // 
             // btnLogin
             // 
@@ -151,14 +153,13 @@
             this.ClientSize = new System.Drawing.Size(703, 266);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.cbHienMK);
+            this.Controls.Add(this.cbShowPassword);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.btnExit);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "fDangNhap";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Đăng nhập";
-            this.Load += new System.EventHandler(this.fDangNhap_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -171,12 +172,12 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox tbxUserName;
+        private System.Windows.Forms.TextBox txtAccount;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.TextBox tbxPassword;
+        private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox cbHienMK;
+        private System.Windows.Forms.CheckBox cbShowPassword;
         private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.Button btnExit;
     }

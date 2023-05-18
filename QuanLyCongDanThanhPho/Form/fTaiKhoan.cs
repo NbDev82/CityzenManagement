@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QuanLyCongDanThanhPho.DAO;
+using QuanLyCongDanThanhPho.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,23 +14,31 @@ namespace QuanLyCongDanThanhPho
 {
     public partial class fTaiKhoan : Form
     {
-        CongDan cd;
-        public fTaiKhoan(CongDan cd)
+        TaiKhoan tk;
+        public fTaiKhoan(TaiKhoan tk)
         {
             InitializeComponent();
-            this.cd = cd;
+            this.tk = tk;
         }
-
         private void btnDoiMatKhau_Click(object sender, EventArgs e)
         {
             if(MessageBox.Show(null,"Bạn muốn đổi mật khẩu?","",MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 try
                 {
+                    if (tbMatKhau.Text != tk.Matkhau)
+                        throw new Exception();
                     string mkmoi = tbMatKhauMoi.Text;
                     if (mkmoi.Length >= 5)
                     {
-                        CongDanDAO.Instance.DoiMatKhau(cd, mkmoi);
+                        if(AccountsDAO.Instance.DoiMatKhau(tk.Macd, mkmoi))
+                        {
+                            MessageBox.Show("Đổi mật khẩu thành công");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Đổi mật khẩu thất bại");
+                        }
                         tbMatKhau.Text = "";
                         tbMatKhauMoi.Text = "";
                     }
@@ -37,13 +47,12 @@ namespace QuanLyCongDanThanhPho
                         MessageBox.Show("Mật khẩu không hợp lệ!");
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    MessageBox.Show("Đổi mật khẩu thất bại\n" + ex);
+                    MessageBox.Show("Mật khẩu hoặc tài khoản không đúng");
                 }
             }
         }
-
         private void cbHienMatKhau_CheckedChanged(object sender, EventArgs e)
         {
             if (cbHienMatKhau.Checked)
@@ -57,10 +66,9 @@ namespace QuanLyCongDanThanhPho
                 tbMatKhauMoi.UseSystemPasswordChar = true;
             }
         }
-
         private void fTaiKhoan_Load(object sender, EventArgs e)
         {
-            cbLoaiTaiKhoan.Text = cd.Loaitk;
+            cbLoaiTaiKhoan.Text = tk.Phanquyen == 1 ? "Quản lý" : "Công dân"; 
         }
     }
 }

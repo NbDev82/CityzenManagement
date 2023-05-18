@@ -33,9 +33,6 @@
             this.txtTimKiem = new System.Windows.Forms.TextBox();
             this.btnXem = new System.Windows.Forms.Button();
             this.dtgvThongTinCaNhan = new System.Windows.Forms.DataGridView();
-            this.panel12 = new System.Windows.Forms.Panel();
-            this.cbxLoaiTaiKhoan = new System.Windows.Forms.ComboBox();
-            this.label12 = new System.Windows.Forms.Label();
             this.panel14 = new System.Windows.Forms.Panel();
             this.cbxTinhTrang = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -76,7 +73,6 @@
             this.rdoQuanLy = new System.Windows.Forms.RadioButton();
             this.pnTimKiem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvThongTinCaNhan)).BeginInit();
-            this.panel12.SuspendLayout();
             this.panel14.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel7.SuspendLayout();
@@ -149,43 +145,6 @@
             this.dtgvThongTinCaNhan.TabIndex = 48;
             this.dtgvThongTinCaNhan.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvThongTinCaNhan_CellContentDoubleClick);
             // 
-            // panel12
-            // 
-            this.panel12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.panel12.Controls.Add(this.cbxLoaiTaiKhoan);
-            this.panel12.Controls.Add(this.label12);
-            this.panel12.Enabled = false;
-            this.panel12.Location = new System.Drawing.Point(12, 517);
-            this.panel12.Margin = new System.Windows.Forms.Padding(4);
-            this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(480, 43);
-            this.panel12.TabIndex = 74;
-            // 
-            // cbxLoaiTaiKhoan
-            // 
-            this.cbxLoaiTaiKhoan.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cbxLoaiTaiKhoan.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cbxLoaiTaiKhoan.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxLoaiTaiKhoan.FormattingEnabled = true;
-            this.cbxLoaiTaiKhoan.Location = new System.Drawing.Point(216, 4);
-            this.cbxLoaiTaiKhoan.Margin = new System.Windows.Forms.Padding(4);
-            this.cbxLoaiTaiKhoan.Name = "cbxLoaiTaiKhoan";
-            this.cbxLoaiTaiKhoan.Size = new System.Drawing.Size(252, 37);
-            this.cbxLoaiTaiKhoan.TabIndex = 63;
-            this.cbxLoaiTaiKhoan.SelectedIndexChanged += new System.EventHandler(this.cbLoaiTaiKhoan_SelectedIndexChanged);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(4, 7);
-            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(182, 29);
-            this.label12.TabIndex = 2;
-            this.label12.Text = "Loại tài khoản:";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // panel14
             // 
             this.panel14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
@@ -207,7 +166,7 @@
             this.cbxTinhTrang.FormattingEnabled = true;
             this.cbxTinhTrang.Items.AddRange(new object[] {
             "Còn sống",
-            "Qua đời"});
+            "Đã chết"});
             this.cbxTinhTrang.Location = new System.Drawing.Point(216, 4);
             this.cbxTinhTrang.Margin = new System.Windows.Forms.Padding(4);
             this.cbxTinhTrang.Name = "cbxTinhTrang";
@@ -413,6 +372,7 @@
             // dtpkNgaySinh
             // 
             this.dtpkNgaySinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpkNgaySinh.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpkNgaySinh.Location = new System.Drawing.Point(216, 4);
             this.dtpkNgaySinh.Margin = new System.Windows.Forms.Padding(4);
             this.dtpkNgaySinh.Name = "dtpkNgaySinh";
@@ -610,7 +570,7 @@
             this.btnUpdate.TabIndex = 18;
             this.btnUpdate.Text = "Cập nhật";
             this.btnUpdate.UseVisualStyleBackColor = false;
-            this.btnUpdate.Click += new System.EventHandler(this.btThem_Click);
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // rdoCongDan
             // 
@@ -648,7 +608,6 @@
             this.Controls.Add(this.panel15);
             this.Controls.Add(this.pnPhanQuyen);
             this.Controls.Add(this.panel14);
-            this.Controls.Add(this.panel12);
             this.Controls.Add(this.pnThongTinCaNhan);
             this.Controls.Add(this.pnQuanLy);
             this.Controls.Add(this.panel6);
@@ -659,8 +618,6 @@
             this.pnTimKiem.ResumeLayout(false);
             this.pnTimKiem.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvThongTinCaNhan)).EndInit();
-            this.panel12.ResumeLayout(false);
-            this.panel12.PerformLayout();
             this.panel14.ResumeLayout(false);
             this.panel14.PerformLayout();
             this.panel8.ResumeLayout(false);
@@ -696,9 +653,6 @@
         private System.Windows.Forms.TextBox txtTimKiem;
         private System.Windows.Forms.Button btnXem;
         private System.Windows.Forms.DataGridView dtgvThongTinCaNhan;
-        private System.Windows.Forms.Panel panel12;
-        private System.Windows.Forms.ComboBox cbxLoaiTaiKhoan;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Panel panel14;
         private System.Windows.Forms.ComboBox cbxTinhTrang;
         private System.Windows.Forms.Label label13;

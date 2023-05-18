@@ -62,12 +62,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAO\AccountsDAO.cs" />
+    <Compile Include="DAO\CCCDDAO.cs" />
     <Compile Include="DAO\HoKhauDAO.cs" />
     <Compile Include="DAO\HonNhanDAO.cs" />
+    <Compile Include="DAO\KhaiSinhDAO.cs" />
+    <Compile Include="DAO\KhaiTuDAO.cs" />
+    <Compile Include="DAO\TamTruDAO.cs" />
+    <Compile Include="DAO\TamTruTamVangDAO.cs" />
+    <Compile Include="DAO\TamVangDAO.cs" />
+    <Compile Include="DTO\CCCD.cs" />
     <Compile Include="DTO\ChiTietHoKhau.cs" />
     <Compile Include="DAO\CongDanDAO.cs" />
     <Compile Include="DTO\CongDan.cs" />
     <Compile Include="DBConnection.cs" />
+    <Compile Include="DTO\KhaiSinh.cs" />
+    <Compile Include="DTO\KhaiTu.cs" />
+    <Compile Include="DTO\TaiKhoan.cs" />
+    <Compile Include="DTO\TamTru.cs" />
+    <Compile Include="DTO\TamVang.cs" />
+    <Compile Include="Form\fCCCD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\fCCCD.Designer.cs">
+      <DependentUpon>fCCCD.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\fKhaiSinhKhaiTu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,12 +98,6 @@
     </Compile>
     <Compile Include="Form\fHonNhan.Designer.cs">
       <DependentUpon>fHonNhan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Form\fChiTietHoKhau.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form\fChiTietHoKhau.Designer.cs">
-      <DependentUpon>fChiTietHoKhau.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\fDangNhap.cs">
       <SubType>Form</SubType>
@@ -126,16 +139,28 @@
     <Compile Include="Form\fTaiKhoan.Designer.cs">
       <DependentUpon>fTaiKhoan.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\fTamTruTamVang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\fTamTruTamVang.Designer.cs">
+      <DependentUpon>fTamTruTamVang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\fThue.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\fThue.Designer.cs">
+      <DependentUpon>fThue.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form\fCCCD.resx">
+      <DependentUpon>fCCCD.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\fKhaiSinhKhaiTu.resx">
       <DependentUpon>fKhaiSinhKhaiTu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\fHonNhan.resx">
       <DependentUpon>fHonNhan.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form\fChiTietHoKhau.resx">
-      <DependentUpon>fChiTietHoKhau.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\fDangNhap.resx">
       <DependentUpon>fDangNhap.cs</DependentUpon>
@@ -154,6 +179,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\fThongTinCaNhan.resx">
       <DependentUpon>fThongTinCaNhan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\fTamTruTamVang.resx">
+      <DependentUpon>fTamTruTamVang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\fThue.resx">
+      <DependentUpon>fThue.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -193,6 +224,8 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UC\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

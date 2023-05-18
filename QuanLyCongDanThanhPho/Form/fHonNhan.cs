@@ -1,4 +1,5 @@
 ﻿using QuanLyCongDanThanhPho.DAO;
+using QuanLyCongDanThanhPho.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,54 +16,52 @@ namespace QuanLyCongDanThanhPho
     {
         HonNhan hn;
         CongDan cd;
-
+        TaiKhoan tk;
         public readonly string XACNHANLAN1 = "XacNhanLan1";
         public readonly string XACNHANLAN2 = "XacNhanLan2";
-
-        public fHonNhan(CongDan cd)
+        public fHonNhan(CongDan cd, TaiKhoan tk)
         {
             InitializeComponent();
             this.cd = cd;
+            this.tk = tk;
         }
         private void fHonNhan_Load(object sender, EventArgs e)
         {
             HonNhanDAO.Instance.LoadFormPersonal(dtgvHonNhan, cd);
         }
-        public void FillA(string Macd)
+        public void FillA(int Macd)
         {
-            List<Control> ltext = new List<Control>();
-            ltext.Add(cbMaCDNam);
-            ltext.Add(tbHoTenNam);
-            ltext.Add(dtpkNgaySinhNam);
-            ltext.Add(tbNoiSinhNam);
-            ltext.Add(tbGioiTinhNam);
-            ltext.Add(tbNgheNghiepNam);
-            ltext.Add(tbDanTocNam);
-            ltext.Add(tbTonGiaoNam);
-            if (HonNhanDAO.Instance.Fill(Macd, ltext))
+            DataTable dt = CongDanDAO.Instance.LayDanhSach(Macd);
+            if(dt != null)
             {
+                cbMaCDNam.Text = dt.Rows[0]["MaCD"].ToString();
+                tbHoTenNam.Text = dt.Rows[0]["HoTen"].ToString();
+                dtpkNgaySinhNam.Text = dt.Rows[0]["NgaySinh"].ToString();
+                tbNoiSinhNam.Text = dt.Rows[0]["NoiSinh"].ToString();
+                tbGioiTinhNam.Text = dt.Rows[0]["GioiTinh"].ToString();
+                tbNgheNghiepNam.Text = dt.Rows[0]["NgheNghiep"].ToString();
+                tbDanTocNam.Text = dt.Rows[0]["DanToc"].ToString();
+                tbTonGiaoNam.Text = dt.Rows[0]["TonGiao"].ToString();
                 tbQuanHeNam.Text = tbGioiTinhNam.Text == "Nam" ? "Chồng" : "Vợ";
                 btnDangKy.Enabled = true;
             }
-
         }
-        public void FillB(string Macd)
+        public void FillB(int Macd)
         {
-            List<Control> ltext = new List<Control>();
-            ltext.Add(cbMaCDNu);
-            ltext.Add(tbHoTenNu);
-            ltext.Add(dtpkNgaySinhNu);
-            ltext.Add(tbNoiSinhNu);
-            ltext.Add(tbGioiTinhNu);
-            ltext.Add(tbNgheNghiepNu);
-            ltext.Add(tbDanTocNu);
-            ltext.Add(tbTonGiaoNu);
-            if (HonNhanDAO.Instance.Fill(Macd, ltext))
+            DataTable dt = CongDanDAO.Instance.LayDanhSach(Macd);
+            if (dt != null)
             {
+                cbMaCDNu.Text = dt.Rows[0]["MaCD"].ToString();
+                tbHoTenNu.Text = dt.Rows[0]["HoTen"].ToString();
+                dtpkNgaySinhNu.Text = dt.Rows[0]["NgaySinh"].ToString();
+                tbNoiSinhNu.Text = dt.Rows[0]["NoiSinh"].ToString();
+                tbGioiTinhNu.Text = dt.Rows[0]["GioiTinh"].ToString();
+                tbNgheNghiepNu.Text = dt.Rows[0]["NgheNghiep"].ToString();
+                tbDanTocNu.Text = dt.Rows[0]["DanToc"].ToString();
+                tbTonGiaoNu.Text = dt.Rows[0]["TonGiao"].ToString();
                 tbQuanHeNu.Text = tbGioiTinhNu.Text == "Nam" ? "Chồng" : "Vợ";
                 btnDangKy.Enabled = true;
             }
-
         }
         public void WireEvents(Control Controls)
         {
@@ -96,24 +95,18 @@ namespace QuanLyCongDanThanhPho
             cbMaCDNam.Enabled = true;
             cbLoai.Enabled = true;
         }
-
-        private void btnDangKy_Click(object sender, EventArgs e)
+        public void ExecuteKetHon()
         {
             try
             {
                 if (cbMaCDNam.Text == "" || cbMaCDNu.Text == "")
                     throw new Exception();
-                if (!HonNhanDAO.Instance.isExist(cbMaCDNam.Text) && !HonNhanDAO.Instance.isExist(cbMaCDNu.Text))
+                int MaCDNam = int.Parse(cbMaCDNam.Text);
+                int MaCDNu = int.Parse(cbMaCDNu.Text);
+                string loai = cbLoai.Text;
+                if (!HonNhanDAO.Instance.isExist(MaCDNam, MaCDNu, loai))
                 {
-                    string maCDChong = tbQuanHeNam.Text == "Chồng" ? cbMaCDNam.Text : cbMaCDNu.Text;
-                    string maCDVo = tbQuanHeNu.Text == "Vợ" ? cbMaCDNu.Text : cbMaCDNam.Text;
-                    string ngay = dtpkNgayDangKy.Value.Date.ToString();
-                    string Admin = CongDanDAO.Instance.GetControler();
-                    int mahn = HonNhanDAO.Instance.GetMaHNMax() + 1;
-                    HonNhan honNhan = new HonNhan(mahn, maCDChong, maCDVo, cbLoai.Text, ngay, null, null, "Chưa Duyệt");
-                    HonNhanDAO.Instance.SendForm(honNhan);
-
-                    HonNhanDAO.Instance.LoadFormPersonal(dtgvHonNhan, cd);
+                    ExecuteSendRequest("Kết hôn");
                 }
                 else
                 {
@@ -125,17 +118,84 @@ namespace QuanLyCongDanThanhPho
                 MessageBox.Show("Thông tin không hợp lệ!");
             }
         }
-
+        public void ExecuteLyHon()
+        {
+            try
+            {
+                if (cbMaCDNam.Text == "" || cbMaCDNu.Text == "")
+                    throw new Exception();
+                int MaCDNam;
+                int MaCDNu;
+                if (tbGioiTinhNam.Text == "Nam")
+                {
+                    MaCDNam = int.Parse(cbMaCDNam.Text);
+                    MaCDNu = int.Parse(cbMaCDNu.Text);
+                }
+                else
+                {
+                    MaCDNam = int.Parse(cbMaCDNu.Text);
+                    MaCDNu = int.Parse(cbMaCDNam.Text);
+                }
+                string loai = cbLoai.Text;
+                if (HonNhanDAO.Instance.isExist(MaCDNam, MaCDNu, loai))
+                {
+                    HonNhan hn = HonNhanDAO.Instance.ReadByID(MaCDNam, MaCDNu);
+                    if (hn == null)
+                        throw new Exception();
+                    if (hn.Loai != "Ly hôn")
+                        ExecuteSendRequest("Ly hôn");
+                    else
+                        MessageBox.Show("Đơn ly hôn đã tồn tại");
+                }
+                else
+                {
+                    MessageBox.Show("2 người không có mối quan hệ hôn nhân với nhau");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Thông tin không hợp lệ!");
+            }
+        }
+        public void ExecuteSendRequest(string chedo)
+        {
+            int maCDChong = int.Parse(cbMaCDNam.Text);
+            int maCDVo = int.Parse(cbMaCDNu.Text);
+            string ngay = dtpkNgayDangKy.Value.Date.ToString();
+            HonNhan honnhan = new HonNhan(-1, maCDChong, maCDVo, cbLoai.Text, ngay, -1, -1, "Chưa Duyệt");
+            if (chedo == "Ly hôn")
+            {
+                honnhan = HonNhanDAO.Instance.ReadByID(maCDChong, maCDVo);
+                honnhan = new HonNhan(honnhan.Mahn, maCDChong, maCDVo, cbLoai.Text, ngay, -1, -1, "Chưa Duyệt");
+            }
+            HonNhanDAO.Instance.SendForm(honnhan);
+            HonNhanDAO.Instance.LoadFormPersonal(dtgvHonNhan, cd);
+        }
+        private void btnDangKy_Click(object sender, EventArgs e)
+        {
+            if (cbLoai.Text == "Kết hôn")
+            {
+                ExecuteKetHon();
+            } else if(cbLoai.Text =="Ly hôn")
+            {
+                ExecuteLyHon();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn loại đăng ký");
+            }
+        }
         private void btnHuy_Click(object sender, EventArgs e)
         {
             try
             {
                 if (cbMaCDNam.Text == "" || cbMaCDNu.Text == "")
                     throw new Exception();
-                if (!HonNhanDAO.Instance.CheckXacNhan(cd.Tentk))
+                if (!HonNhanDAO.Instance.CheckXacNhan(cd.Macd))
                 {
                     HonNhanDAO.Instance.Delete(hn);
                     MessageBox.Show("Hủy thành công");
+                    HonNhanDAO.Instance.LoadFormPersonal(dtgvHonNhan, cd);
                 }
                 else
                 {
@@ -147,31 +207,31 @@ namespace QuanLyCongDanThanhPho
                 MessageBox.Show("Hủy thất bại");
             }
         }
-
         private void btnXacNhan_Click(object sender, EventArgs e)
         {
-            
             try
             {
-                if(!HonNhanDAO.Instance.CheckXacNhan(cd.Tentk))
+                if(!HonNhanDAO.Instance.CheckXacNhan(cd.Macd))
                 {
                     if (tbXacNhanNam.Text != "" || tbXacNhanNu.Text != "")
                     {
-                        HonNhanDAO.Instance.Update(hn, cd.Tentk, XACNHANLAN2);
+                        HonNhanDAO.Instance.Update(hn, cd.Macd, XACNHANLAN2);
                     }
                     else
                     {
-                        HonNhanDAO.Instance.Update(hn, cd.Tentk, XACNHANLAN1);
+                        HonNhanDAO.Instance.Update(hn, cd.Macd, XACNHANLAN1);
                     }
-                    hn = HonNhanDAO.Instance.ReadByID(cbMaCDNam.Text, cbMaCDNu.Text);
+                    int MacdNam = int.Parse(cbMaCDNam.Text);
+                    int MacdNu = int.Parse(cbMaCDNu.Text);
+                    hn = HonNhanDAO.Instance.ReadByID(MacdNam, MacdNu);
                     HonNhanDAO.Instance.LoadFormPersonal(dtgvHonNhan, cd);
-                    if (cd.Tentk == hn.Xacnhanlan1 || cd.Tentk == hn.Xacnhanlan2)
+                    if (cd.Macd == hn.Xacnhanlan1 || cd.Macd == hn.Xacnhanlan2)
                     {
-                        tbXacNhanNam.Text = cd.Tentk;
+                        tbXacNhanNam.Text = cd.Macd.ToString();
                     }
                     else
                     {
-                        tbXacNhanNu.Text = cd.Tentk;
+                        tbXacNhanNu.Text = cd.Macd.ToString();
                     }
                 }
                 else
@@ -185,60 +245,81 @@ namespace QuanLyCongDanThanhPho
                 MessageBox.Show("EROR");
             }
         }
-
         private void rdbtnCongDan_CheckedChanged(object sender, EventArgs e)
         {
             if (rdbtnCongDan.Checked)
             {
                 pnQuanLy.Visible = false;
+                pnTimKiem.Enabled = false;
                 HonNhanDAO.Instance.LoadFormPersonal(dtgvHonNhan, cd);
             }
         }
-
         private void rdobtnQuanLy_CheckedChanged(object sender, EventArgs e)
         {
-            if (rdbtnQuanLy.Checked)
+            try
             {
-                pnQuanLy.Visible = true;
-                HonNhanDAO.Instance.LoadMailControler(dtgvHonNhan);
+                if (rdbtnQuanLy.Checked)
+                {
+                    if (tk.Phanquyen == 1)
+                    {
+                        pnQuanLy.Visible = true;
+                        pnTimKiem.Enabled = true;
+                        HonNhanDAO.Instance.LoadMailControler(dtgvHonNhan);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Bạn không có quyền này");
+                        rdbtnCongDan.Checked = true;
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Không hợp lệ");
             }
         }
-
         private void btnFill_Click(object sender, EventArgs e)
         {
             try
             {
-                FillA(cbMaCDNam.Text);
-                FillB(cbMaCDNu.Text);
+                int MaCDNam = int.Parse(cbMaCDNam.Text);
+                FillA(MaCDNam);
+            }
+            catch
+            {
+                MessageBox.Show("Thông tin không hợp lệ");
+            }
+            try
+            {
+                int MaCDNu = int.Parse(cbMaCDNu.Text);
+                FillB(MaCDNu);
             }
             catch
             {
                 MessageBox.Show("Thông tin không hợp lệ");
             }
         }
-
         private void dtgvHonNhan_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
                 int index = dtgvHonNhan.CurrentRow.Index;
-                DataTable CurrentRow = (DataTable)dtgvHonNhan.DataSource;
+                DataTable dt = (DataTable)dtgvHonNhan.DataSource;
+                DataRow CurrentRow = dt.Rows[index];
                 if (CurrentRow != null)
                 {
-                    string maCdChong = (string)CurrentRow.Rows[index]["MaCDChong"];
-                    string maCdVo = (string)CurrentRow.Rows[index]["MaCDVo"];
+                    int maCdChong = (int)CurrentRow["MaCDChong"];
+                    int maCdVo = (int)CurrentRow["MaCDVo"];
                     FillA(maCdChong);
                     FillB(maCdVo);
-                    string tkChong = (string)CongDanDAO.Instance.LayDanhSach(maCdChong).Rows[0]["TenTK"];
-                    string tkVo = (string)CongDanDAO.Instance.LayDanhSach(maCdVo).Rows[0]["TenTK"];
                     hn = HonNhanDAO.Instance.ReadByID(maCdChong, maCdVo);
-                    if (tkChong == hn.Xacnhanlan1 || tkChong == hn.Xacnhanlan2)
+                    if (maCdChong == hn.Xacnhanlan1 || maCdChong == hn.Xacnhanlan2)
                     {
-                        tbXacNhanNam.Text = cd.Tentk;
+                        tbXacNhanNam.Text = cd.Macd.ToString();
                     }
-                    if (tkVo == hn.Xacnhanlan1 || tkVo == hn.Xacnhanlan2)
+                    if (maCdVo == hn.Xacnhanlan1 || maCdVo == hn.Xacnhanlan2)
                     {
-                        tbXacNhanNu.Text = cd.Tentk;
+                        tbXacNhanNu.Text = cd.Macd.ToString();
                     }
                     cbLoai.Text = hn.Loai;
                     tbCode.Text = hn.Mahn.ToString();
@@ -248,29 +329,32 @@ namespace QuanLyCongDanThanhPho
                     btnHuy.Enabled = true;
                     cbMaCDNam.Enabled = false;
                     cbMaCDNu.Enabled = false;
-                    cbLoai.Enabled = false;
                 }
                 else
                     throw new Exception();
-
             }
             catch
             {
                 MessageBox.Show("Vui lòng chọn 1 thư để xem nội dung");
             }
         }
-
         private void btTimKiem_Click(object sender, EventArgs e)
         {
-            int mahn = int.Parse(tbTimKiem.Text);
-            HonNhanDAO.Instance.TimKiemHonNhan(dtgvHonNhan,cd, mahn);
+            try
+            {
+                int mahn = int.Parse(tbTimKiem.Text);
+                HonNhanDAO.Instance.TimKiemHonNhan(dtgvHonNhan,mahn);
+            }
+            catch
+            {
+                MessageBox.Show("Không hợp lệ");
+            }
         }
-
         private void btXem_Click(object sender, EventArgs e)
         {
-            HonNhanDAO.Instance.LoadFormPersonal(dtgvHonNhan,cd);
+            HonNhanDAO.Instance.LoadMailControler(dtgvHonNhan);
+            //HonNhanDAO.Instance.LoadFormPersonal(dtgvHonNhan,cd);
         }
-
         private void btnDuyet_Click(object sender, EventArgs e)
         {
             try
@@ -279,16 +363,29 @@ namespace QuanLyCongDanThanhPho
                 {
                     MessageBox.Show("Nội dung không được để trống");
                     return;
-                }                   
-                hn.Trangthai = "Đã Duyệt";
-                HonNhanDAO.Instance.CapNhatTrangThaiHonNhan(hn);
-                HonNhanDAO.Instance.LoadMailControler(dtgvHonNhan);
-                tbTrangThai.Text = hn.Trangthai;
+                }
                 string TieuDe = "Đồng ý kết hôn";
+                if (hn.Loai == "Ly hôn")
+                {
+                    if (HonNhanDAO.Instance.Delete(hn))
+                    {
+                        MessageBox.Show("Ly hôn thành công");
+                        TieuDe = "Đồng ý ly hôn";
+                    }
+                    else
+                        MessageBox.Show("Ly hôn thất bại");
+                    return;
+                } else if(hn.Loai == "Kết hôn")
+                {
+                    hn.Trangthai = "Đã Duyệt";
+                    HonNhanDAO.Instance.CapNhatTrangThaiHonNhan(hn);
+                    HonNhanDAO.Instance.LoadMailControler(dtgvHonNhan);
+                    tbTrangThai.Text = hn.Trangthai;
+                }
                 string ngay = DateTime.Now.Date.ToString();
-                string TKNguoiGui = cd.Tentk;
-                string TKNguoiChong = (string)CongDanDAO.Instance.LayDanhSach(cbMaCDNam.Text).Rows[0]["TenTK"];
-                string TKNguoiVo = (string)CongDanDAO.Instance.LayDanhSach(cbMaCDNu.Text).Rows[0]["TenTK"];
+                int TKNguoiGui = cd.Macd;
+                int TKNguoiChong = int.Parse(cbMaCDNam.Text);
+                int TKNguoiVo = int.Parse(cbMaCDNu.Text);
                 string mess = tbNoiDung.Text;
                 Mail mailToiChong = new Mail(TieuDe, ngay, TKNguoiGui, TKNguoiChong, mess);
                 Mail mailToiVo = new Mail(TieuDe, ngay, TKNguoiGui, TKNguoiVo, mess);
@@ -300,7 +397,6 @@ namespace QuanLyCongDanThanhPho
                 MessageBox.Show("Vui lòng chọn một yêu cầu");
             }
         }
-
         private void btnTuChoi_Click(object sender, EventArgs e)
         {
             try
@@ -309,7 +405,27 @@ namespace QuanLyCongDanThanhPho
                 {
                     throw new Exception();
                 }
-                HonNhanDAO.Instance.Delete(hn);
+                if(hn.Loai == "Kết hôn")
+                {
+                    if (HonNhanDAO.Instance.Delete(hn))
+                    {
+                        MessageBox.Show("Gửi thành công");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Gửi thất bại");
+                    }
+                } else if (hn.Loai == "Ly hôn")
+                {
+                    if (HonNhanDAO.Instance.ConvertDivorceToMarriage(hn))
+                    {
+                        MessageBox.Show("Gửi thành công");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Gửi thất bại");
+                    }
+                }
                 HonNhanDAO.Instance.LoadMailControler(dtgvHonNhan);
             }
             catch

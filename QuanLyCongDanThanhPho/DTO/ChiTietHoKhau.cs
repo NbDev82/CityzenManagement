@@ -8,23 +8,20 @@ namespace QuanLyCongDanThanhPho
 {
     public class ChiTietHoKhau
     {
-        int maho;
-        string macd;
-        int tinhtrangcutru;
-        string quanhevoichuho;
-        string ngaydangky;
-        string trangthai;
-
+        private int maho;
+        private int macd;
+        private int tinhtrangcutru;
+        private string quanhevoichuho;
+        private string ngaydangky;
+        private string trangthai;
         public int Maho { get => maho; set => maho = value; }
-        public string Macd { get => macd; set => macd = value; }
+        public int Macd { get => macd; set => macd = value; }
         public int Tinhtrangcutru { get => tinhtrangcutru; set => tinhtrangcutru = value; }
         public string Quanhevoichuho { get => quanhevoichuho; set => quanhevoichuho = value; }
         public string Ngaydangky { get => ngaydangky; set => ngaydangky = value; }
         public string Trangthai { get => trangthai; set => trangthai = value; }
-
         public ChiTietHoKhau() { }
-
-        public ChiTietHoKhau(int maho, string macd, int tinhtrangcutru, string quanhevoichuho, string ngaydangky, string trangthai)
+        public ChiTietHoKhau(int maho, int macd, int tinhtrangcutru, string quanhevoichuho, string ngaydangky, string trangthai)
         {
             this.maho = maho;
             this.macd = macd;

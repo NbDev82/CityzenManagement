@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QuanLyCongDanThanhPho.DAO;
+using QuanLyCongDanThanhPho.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,10 +19,8 @@ namespace QuanLyCongDanThanhPho
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            CongDan cd = CongDanDAO.Instance.KiemTraDangNhap("nguyenvantrong", "nguyenvantrong");
-            Application.Run(new fThongTinCaNhan(cd));
+            Application.Run(new fDangNhap());
         }
-
 
         static public List<string> tinhthanh = new List<string>()
         {

@@ -40,7 +40,6 @@
             this.panel9 = new System.Windows.Forms.Panel();
             this.tbTenTK = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
             this.btnDoiMatKhau = new System.Windows.Forms.Button();
             this.cbHienMatKhau = new System.Windows.Forms.CheckBox();
             this.panel12.SuspendLayout();
@@ -182,15 +181,6 @@
             this.label9.Text = "Tên tài khoản:";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(220, 414);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(8, 8);
-            this.button2.TabIndex = 80;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
             // btnDoiMatKhau
             // 
             this.btnDoiMatKhau.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -221,7 +211,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.cbHienMatKhau);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.btnDoiMatKhau);
             this.Controls.Add(this.panel12);
             this.Controls.Add(this.panel11);
@@ -257,7 +246,6 @@
         private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.TextBox tbTenTK;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnDoiMatKhau;
         private System.Windows.Forms.CheckBox cbHienMatKhau;
     }

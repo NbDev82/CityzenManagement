@@ -25,8 +25,8 @@ namespace QuanLyCongDanThanhPho.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=QuanLyCongDanThanhPho;Integrat" +
-            "ed Security=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=Backup_CityzenManagement;Integ" +
+            "rated Security=True")]
         public string cnnStr {
             get {
                 return ((string)(this["cnnStr"]));
