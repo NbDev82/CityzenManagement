@@ -24,6 +24,22 @@ namespace QuanLyCongDanThanhPho.DAO
                 return instance;
             }
         }
+        public int GetQuyenHan(int Macd)
+        {
+            try
+            {
+                string SQL = string.Format($"SELECT * FROM Accounts ac WHERE ac.macd = {Macd}");
+                DataTable dt = DBConnection.Instance.LayDanhSach(SQL);
+                int quyenhan = 0;
+                quyenhan = (int)dt.Rows[0]["phanquyen"];
+                return quyenhan;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return 0;
+            }
+        }
         public TaiKhoan GetAccount(int macd, string matkhau)
         {
             try

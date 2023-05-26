@@ -34,16 +34,24 @@ namespace QuanLyCongDanThanhPho
         }
         public void OpenChildForm(Form FormChild)
         {
-            if (CurrentFormChild != null)
-                CurrentFormChild.Close();
-            CurrentFormChild = FormChild;
-            FormChild.TopLevel = false;
-            FormChild.FormBorderStyle = FormBorderStyle.None;
-            FormChild.Dock = DockStyle.Fill;
-            pnBody.Controls.Add(FormChild);
-            pnBody.Tag = FormChild;
-            FormChild.BringToFront();
-            FormChild.Show();
+            try
+            {
+                if (CurrentFormChild != null)
+                    CurrentFormChild.Close();
+                CurrentFormChild = FormChild;
+                FormChild.TopLevel = false;
+                FormChild.FormBorderStyle = FormBorderStyle.None;
+                FormChild.Dock = DockStyle.Fill;
+                pnBody.Controls.Add(FormChild);
+                pnBody.Tag = FormChild;
+                FormChild.BringToFront();
+                if(FormChild != null)
+                    FormChild.Show();
+            }
+            catch
+            {
+
+            }
         }
         private void btHomThu_Click(object sender, EventArgs e)
         {

@@ -74,9 +74,17 @@ namespace QuanLyCongDanThanhPho
                     MessageBox.Show("Thông tin không hợp lệ!");
                 else
                 {
-                    MailDAO.Instance.Them(mail);
-                    ReloadDanhSach();
-                    ResetThongTinRong();
+                    if (MailDAO.Instance.Them(mail))
+                    {
+                        MessageBox.Show("Gửi thành công");
+                        ReloadDanhSach();
+                        ResetThongTinRong();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Gửi thất bại");
+                    }
+
                 }    
             }
             catch (Exception ex)
@@ -105,9 +113,16 @@ namespace QuanLyCongDanThanhPho
                 int nguoigui = int.Parse(tbNguoiGui.Text);
                 int nguoinhan = int.Parse(cbNguoiNhan.Text);
                 Mail mail = new Mail(Convert.ToInt32(tbMaMail.Text), tbTieuDe.Text, dtpkNgay.Text, nguoigui, nguoinhan, rtbNoiDung.Text);
-                MailDAO.Instance.Xoa(mail);
-                ReloadDanhSach();
-                ResetThongTinRong();
+                if (MailDAO.Instance.Xoa(mail))
+                {
+                    MessageBox.Show("Xóa thành công");
+                    ReloadDanhSach();
+                    ResetThongTinRong();
+                }
+                else
+                {
+                    MessageBox.Show("Xóa thất bại");
+                }
             }
             catch (Exception ex)
             {
@@ -145,9 +160,15 @@ namespace QuanLyCongDanThanhPho
                     MessageBox.Show("Thông tin không hợp lệ!");
                 else
                 {
-                    MailDAO.Instance.Sua(mail);
-                    ReloadDanhSach();
-                    ResetThongTinRong();
+                    if (MailDAO.Instance.Sua(mail))
+                    {
+                        MessageBox.Show("Sửa thành công");
+                        ReloadDanhSach();
+                        ResetThongTinRong();
+                    }
+                    else{
+                        MessageBox.Show("Sửa thất bại");
+                    }
                 }
             }
             catch (Exception ex)

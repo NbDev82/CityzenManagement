@@ -15,6 +15,11 @@ namespace QuanLyCongDanThanhPho
     public partial class fTamTruTamVang : Form
     {
         CongDan cd;
+        enum Authentication
+        {
+            Manager =1,
+            Citizen = 0
+        }
         enum State
         {
             Access = 1,
@@ -24,6 +29,7 @@ namespace QuanLyCongDanThanhPho
         {
             TamVang = 0,
             TamTru = 1,
+            QuanLy = 2
         }
         public fTamTruTamVang(CongDan cd)
         {
@@ -32,14 +38,27 @@ namespace QuanLyCongDanThanhPho
         }
         private void fTamTruTamVang_Load(object sender, EventArgs e)
         {
-            DataRow dt = TamTruTamVangDAO.Instance.GetPersonalData(cd.Macd);
-            txtMaCD.Text = dt["Mã CD"].ToString();
-            txtTen.Text = dt["Họ tên"].ToString();
-            txtCCCD.Text = dt["Mã CCCD"].ToString();
-            dtpkNgaySinh.Text = dt["Ngày sinh"].ToString();
-            txtTinh.Text = dt["Tỉnh"].ToString();
-            txtHuyen.Text = dt["Huyện"].ToString();
-            txtXa.Text = dt["Xã"].ToString();
+            try
+            {
+                DataRow dt = TamTruTamVangDAO.Instance.GetPersonalData(cd.Macd);
+                if (dt == null)
+                {
+                    this.Enabled = false;
+                    throw new Exception("Công dân chưa sử dụng được chức năng này! \n Hãy đăng ký CCCD trước");
+                }
+                txtMaCD.Text = dt["Mã CD"].ToString();
+                txtTen.Text = dt["Họ tên"].ToString();
+                dtpkNgaySinh.Text = dt["Ngày sinh"].ToString();
+                txtTinh.Text = dt["Tỉnh"].ToString();
+                txtHuyen.Text = dt["Huyện"].ToString();
+                txtXa.Text = dt["Xã"].ToString();
+                txtCCCD.Text = dt["Mã CCCD"].ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                
+            }
         }
         public bool CheckTamVang()
         {
@@ -414,6 +433,26 @@ namespace QuanLyCongDanThanhPho
         private void btnKiemTraChuaDuyet_Click(object sender, EventArgs e)
         {
             dtgvThongTin.DataSource = TamVangDAO.Instance.GetListExpiredPermission();
+        }
+        private void tCMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int mode = tCMode.SelectedIndex;
+                if (mode == Convert.ToInt32(Mode.QuanLy))
+                {
+                    int quyenhan = AccountsDAO.Instance.GetQuyenHan(cd.Macd);
+                    if (quyenhan == Convert.ToInt32(Authentication.Citizen))
+                    {
+                        tCMode.SelectedIndex = 0;
+                        throw new Exception("Bạn không có quyền này");
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

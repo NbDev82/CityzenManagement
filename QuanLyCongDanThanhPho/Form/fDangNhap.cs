@@ -63,5 +63,10 @@ namespace QuanLyCongDanThanhPho
                 txtPassword.UseSystemPasswordChar = true;
             }
         }
+
+        private void txtAccount_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

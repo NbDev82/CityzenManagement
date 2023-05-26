@@ -59,7 +59,7 @@
             this.txtAccount.Name = "txtAccount";
             this.txtAccount.Size = new System.Drawing.Size(413, 34);
             this.txtAccount.TabIndex = 0;
-            this.txtAccount.Text = "1";
+            this.txtAccount.TextChanged += new System.EventHandler(this.txtAccount_TextChanged);
             // 
             // label1
             // 
@@ -90,7 +90,6 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(413, 34);
             this.txtPassword.TabIndex = 2;
-            this.txtPassword.Text = "12345";
             this.txtPassword.UseSystemPasswordChar = true;
             // 
             // label2

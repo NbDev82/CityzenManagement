@@ -49,10 +49,13 @@ namespace QuanLyCongDanThanhPho.DTO
             this.NoiThuongTru = dt["Nơi thường trú"].ToString();
             this.HanSuDung = dt["Hạn"].ToString();
             this.DacDiemNhanDang = dt["Đặc điểm nhận dạng"].ToString();
-            byte[] imageBytes = (byte[])dt["Hình"];
-            using (MemoryStream ms = new MemoryStream(imageBytes))
+            if (dt["Hình"] != DBNull.Value)
             {
-                this.Avatar = Image.FromStream(ms);
+                byte[] imageBytes = (byte[])dt["Hình"];
+                using (MemoryStream ms = new MemoryStream(imageBytes))
+                {
+                    this.Avatar = Image.FromStream(ms);
+                }
             }
         }
     }
